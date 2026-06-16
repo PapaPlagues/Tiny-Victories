@@ -1,6 +1,7 @@
 import "dotenv/config";
 import express from "express";
 import postsRouter from "./routes/postRoutes.js";
+import authRouter from "./routes/authRoutes.js";
 
 const app = express();
 
@@ -9,6 +10,7 @@ app.use(express.json());
 
 // Routes
 app.use("/posts", postsRouter);
+app.use("/login", authRouter);
 
 
 // Listening
