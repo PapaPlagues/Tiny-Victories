@@ -1,11 +1,6 @@
-import "dotenv/config";
 import { prisma } from "../lib/prisma.js";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-// prob dont want a register auth rn
-// export const registerAuth = (req, res) => {
-    
-// }
 
 export const loginAuth = async (req, res) => {
     try {

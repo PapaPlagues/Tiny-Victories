@@ -2,7 +2,10 @@ import { prisma } from "../lib/prisma.js";
 
 // Get comments for a post
 export const getComments = async (req, res) => {
-  const comments = await prisma.comment.findMany();
+    const { postId } = req.params;
+  const comments = await prisma.comment.findMany({
+    where: { postId }
+  });
   res.json(comments);
 };
 

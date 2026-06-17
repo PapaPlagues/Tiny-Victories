@@ -33,7 +33,7 @@ export const createPost = async (req, res) => {
             content,
             published: false,
 
-            authorId: req.user.id
+            authorId: req.user.userId
         }
     });
     res.status(201).json(post);
