@@ -7,10 +7,11 @@ const app = express();
 
 // Middleware
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // Routes
 app.use("/posts", postsRouter);
-app.use("/login", authRouter);
+app.use("/auth", authRouter);
 
 
 // Listening

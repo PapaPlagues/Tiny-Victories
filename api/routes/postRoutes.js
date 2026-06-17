@@ -1,49 +1,34 @@
 import express from "express";
+import { getPosts, getPostById, createPost, updatePost, deletePost } from "../controllers/postsController.js";
+import { getComments, createComment, deleteComment } from "../controllers/commentController.js";
 const postsRouter = express.Router();
-
-import { getPosts } from "../controllers/postsController.js";
-
 
 // Get all posts
 postsRouter.get("/", getPosts);
 
 // Get one post
-postsRouter.get("/:postId", (req, res) => {
-    return res.send(`GET HTTP method on post/${req.params.postId} resource`);
-} );
+postsRouter.get("/:postId", getPostById);
 
 // Create post
-postsRouter.post("/", (req, res) => {
-    return res.send("Received a POST HTTP method");
-} );
+postsRouter.post("/", createPost);
 
 // Update post
-postsRouter.put("/:postId", (req, res) => {
-    return res.send(`PUT HTTP method on post/${req.params.postId} resource`);
-} );
+postsRouter.put("/:postId", updatePost);
 
 // Delete post
-postsRouter.delete("/:postId", (req, res) => {
-    return res.send(`DELETE HTTP method on post/${req.params.postId} resource`);
-} );
+postsRouter.delete("/:postId", deletePost);
 
 
 // ------- Comments -------
 
 // Get comments for a post
-postsRouter.get("/:postId/comments", (req, res) => {
-    res.send("Received a GET HTTP method for comments");
-});
+postsRouter.get("/:postId/comments", getComments);
 
 // Create comment for a post
-postsRouter.post("/:postId/comments", (req, res) => {
-    res.send("Received a POST HTTP method for comments");
-});
+postsRouter.post("/:postId/comments", createComment);
 
 // Delete comment
-postsRouter.delete("/:postId/comments/:commentId", (req, res) => {
-    res.send("Received a DELETE HTTP method for comment");
-});
+postsRouter.delete("/:postId/comments/:commentId", deleteComment);
 
 
 export default postsRouter;
