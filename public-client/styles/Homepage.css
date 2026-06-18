@@ -76,3 +76,7 @@
 .github-btn:hover {
     transform: translateY(-2px);
 }
+
+.brand {
+    color: var(--dark-accent);
+}

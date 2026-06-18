@@ -23,7 +23,9 @@ function Homepage() {
             <header className="hero">
                 <div className="hero-inner">
                       <div className="hero-text">
-                        <h1>Welcome to Small Victories</h1>
+                        <h1>Welcome to <span className="brand">Tiny Victories</span>
+
+                        </h1>
 
                         <p>
                             Hello! I'm Jacob. I like building things - websites, small games, drawings, and stories.
