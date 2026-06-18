@@ -1,0 +1,34 @@
+:root {
+  /* Dark Mode */
+  --dark-background:   #141118;
+  --dark-text: #edebf0;
+  --dark-primary: #b9abcf;
+  --dark-secondary: #4b3974;
+  --dark-accent: #825eba;
+
+  /* Light Mode */
+  --light-background: #eae7ee;
+  --light-text: #110f14;
+  --light-primary: #3e3054;
+  --light-seconday: #9d8bc6;
+  --light-accent: #6845a1;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--dark-background);
+  color: var(--dark-text);
+  font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  line-height: 1.6;
+}
+
+
+
+a { 
+    text-decoration: none;
+    color: var(--dark-text);
+    font-weight: 500;
+}
