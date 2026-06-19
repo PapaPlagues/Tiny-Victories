@@ -2,21 +2,10 @@ import Card from "../src/components/Card";
 import "../styles/Homepage.css";
 import heroImage from "../src/assets/pexels-timmossholder-3260289.jpg"
 
-function Homepage() {
 
-    const posts = [
-        {
-            title: "A welcome post",
-            excerpt: "Lorem ipsum dolor sit amet consectetur...",
-            link: "/blog/welcome"
-        },
-        {
-            title: "Learning React",
-            excerpt: "Today I figured out components and props...",
-            link: "/blog/react"
-        }
-    ];
-    
+
+
+function Homepage({ posts }) {
 
     return (
         <>
@@ -46,7 +35,7 @@ function Homepage() {
                     <Card 
                         key={i}
                         title={post.title}
-                        excerpt={post.excerpt}
+                        excerpt={post.content}
                         link={post.link}
                     />
                 ))}
