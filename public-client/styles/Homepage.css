@@ -79,4 +79,6 @@
 
 .brand {
     color: var(--dark-accent);
+    font-weight: 700;
+    letter-spacing: 0.5px;
 }
