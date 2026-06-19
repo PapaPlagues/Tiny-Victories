@@ -1,11 +1,14 @@
 import Card from "../src/components/Card";
 import "../styles/Homepage.css";
 import heroImage from "../src/assets/pexels-timmossholder-3260289.jpg"
+import { useOutletContext } from "react-router";
 
 
 
 
-function Homepage({ posts }) {
+function Homepage() {
+
+    const { backendData } = useOutletContext();
 
     return (
         <>
@@ -31,7 +34,7 @@ function Homepage({ posts }) {
             </header>
 
             <div id="home-body">
-                {posts.map((post, i) => (
+                {backendData.map((post, i) => (
                     <Card 
                         key={i}
                         title={post.title}

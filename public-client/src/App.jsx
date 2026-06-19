@@ -1,5 +1,6 @@
 import Header from "./components/Header";
 import Homepage from "../pages/Homepage";
+import { Outlet } from "react-router";
 import { useEffect, useState } from "react";
 
 function App() {
@@ -53,8 +54,9 @@ function App() {
 
       {loading && <p>Loading posts...</p>}
       {error && <p style={{color: "red" }}>{error}</p>}
+      
       {!loading && !error && (
-        <Homepage posts={backendData} />
+        <Outlet context={{backendData}}/>
       )}
       
     </>
