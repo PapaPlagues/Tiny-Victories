@@ -1,4 +1,4 @@
-import Card from "../src/components/Card";
+import PostList from "../src/components/PostList";
 import "../styles/Homepage.css";
 import heroImage from "../src/assets/pexels-timmossholder-3260289.jpg"
 import { useOutletContext } from "react-router";
@@ -7,14 +7,14 @@ const Homepage = () => {
 
     const { backendData = [] } = useOutletContext();
 
+    const previewPosts = backendData.slice(0,3);
+
     return (
         <>
             <header className="hero">
                 <div className="hero-inner">
-                      <div className="hero-text">
-                        <h1>Welcome to <span className="brand">Tiny Victories</span>
-
-                        </h1>
+                    <div className="hero-text">
+                        <h1>Welcome to <span className="brand">Tiny Victories</span></h1>
 
                         <p>
                             Hello! I'm Jacob. I like building things - websites, small games, drawings, and stories.
@@ -32,27 +32,23 @@ const Homepage = () => {
                 </div>
             </header>
 
-            {/* Eventually filter this to show a few and a 'see more posts' */}
-            <div id="home-body">
+            <section id="home-body">
                 <div>
-                      {backendData.map((post, i) => (
-                        <Card 
-                            key={i}
-                            title={post.title}
-                            excerpt={post.content}
-                            link={`/posts/${post.id}`}
-                        />
-                    ))}
+                    <h2>Latest Posts</h2>
                 </div>
-              
-
+                
+             
+                <PostList posts={previewPosts}/>
+                
+                
+                             
                 <div>
                     <p><a href="/posts">View All Posts...</a></p>
                 </div>
                 
-            </div>
+            </section>
         </>
-    )
+    );
 };
 
 

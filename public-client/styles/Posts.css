@@ -1,0 +1,33 @@
+.posts-header {
+    width: 100%;
+    padding: 5rem 2rem 2rem 2rem;
+    display: flex;
+    justify-content: center;
+
+    background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.02));
+}
+
+.posts-header-inner {
+    width: 100%;
+    max-width: 1200px;
+}
+
+.posts-header h1 {
+    font-size: 2.8rem;
+    margin-bottom: 0.8rem;
+}
+
+.posts-subtitle {
+    max-width: 700px;
+    opacity: 0.75;
+    font-size: 1.05rem;
+    line-height: 1.6;
+}
+
+/* main container */
+#posts-body {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
