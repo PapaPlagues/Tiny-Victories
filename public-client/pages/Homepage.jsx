@@ -3,12 +3,9 @@ import "../styles/Homepage.css";
 import heroImage from "../src/assets/pexels-timmossholder-3260289.jpg"
 import { useOutletContext } from "react-router";
 
+const Homepage = () => {
 
-
-
-function Homepage() {
-
-    const { backendData } = useOutletContext();
+    const { backendData = [] } = useOutletContext();
 
     return (
         <>
@@ -25,7 +22,9 @@ function Homepage() {
                             It's a mix of code, art, ideas, and various other projects.
                         </p>
                         <div>
-                            <button className="github-btn">Github</button>
+                            <a href="https://github.com/PapaPlagues">
+                                <button className="github-btn">Github</button>
+                            </a>
                         </div>
                     </div>
 
@@ -33,16 +32,24 @@ function Homepage() {
                 </div>
             </header>
 
+            {/* Eventually filter this to show a few and a 'see more posts' */}
             <div id="home-body">
-                {backendData.map((post, i) => (
-                    <Card 
-                        key={i}
-                        title={post.title}
-                        excerpt={post.content}
-                        link={post.link}
-                    />
-                ))}
+                <div>
+                      {backendData.map((post, i) => (
+                        <Card 
+                            key={i}
+                            title={post.title}
+                            excerpt={post.content}
+                            link={`/posts/${post.id}`}
+                        />
+                    ))}
+                </div>
+              
 
+                <div>
+                    <p><a href="/posts">View All Posts...</a></p>
+                </div>
+                
             </div>
         </>
     )

@@ -1,64 +1,46 @@
 import Header from "./components/Header";
-import Homepage from "../pages/Homepage";
 import { Outlet } from "react-router";
 import { useEffect, useState } from "react";
 
 function App() {
-
-  const [backendData, setbackendData] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [backendData, setBackendData] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   const API_URL = import.meta.env.VITE_API_URL;
-  
-  useEffect(() => {
-    let isMounted = true;
 
+  useEffect(() => {
     const fetchPosts = async () => {
       try {
         setLoading(true);
         setError(null);
 
-        const response = await fetch(API_URL + '/posts');
+        const response = await fetch(API_URL + "/posts");
 
         if (!response.ok) {
           throw new Error(`HTTP error: ${response.status}`);
         }
 
         const data = await response.json();
-
-        if (isMounted) {
-          setbackendData(data);
-        }
+        setBackendData(data);
       } catch (err) {
-        if (isMounted) {
-           setError(err.message);
-        }
+        setError(err.message);
       } finally {
-        if (isMounted) {
-          setLoading(false);
-        }
+        setLoading(false);
       }
     };
 
     fetchPosts();
-
-    return () => {
-      isMounted = false;
-    };
   }, [API_URL]);
 
-  return(
+  return (
     <>
-      <Header/>
+      <Header />
 
       {loading && <p>Loading posts...</p>}
-      {error && <p style={{color: "red" }}>{error}</p>}
-      
-      {!loading && !error && (
-        <Outlet context={{backendData}}/>
-      )}
-      
+      {error && <p style={{ color: "red" }}>{error}</p>}
+
+      <Outlet context={{ backendData }} />
     </>
   );
 }
