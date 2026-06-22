@@ -41,7 +41,9 @@ function App() {
       {loading && <p>Loading posts...</p>}
       {error && <p style={{ color: "red" }}>{error}</p>}
 
-      <Outlet context={{ backendData }} />
+      {!loading && !error && (
+        <Outlet context={{ backendData }} />
+      )}
 
       <Footer />
     </>

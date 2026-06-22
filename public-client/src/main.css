@@ -14,6 +14,10 @@
   --light-accent: #6845a1;
 }
 
+html, body, #root {
+  height: 100%;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -23,6 +27,10 @@ body {
   color: var(--dark-text);
   font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   line-height: 1.6;
+
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 a { 

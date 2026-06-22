@@ -21,7 +21,7 @@ const router = createBrowserRouter([
       {path: "contact", element: <Contact />},
 
       {path: "posts", element: <Posts />},  
-      {path: "posts/:id", element: <Post />} 
+      {path: "posts/:postId", element: <Post />} 
       
     ],
   },
@@ -31,4 +31,4 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <RouterProvider router={router} />
   </StrictMode>,
-)
+);

@@ -22,8 +22,11 @@ const Homepage = () => {
                             It's a mix of code, art, ideas, and various other projects.
                         </p>
                         <div>
+                            <a href="/posts">
+                                <button className="btn" id="main-btn">Posts</button>
+                            </a>
                             <a href="https://github.com/PapaPlagues">
-                                <button className="github-btn">Github</button>
+                                <button className="btn" id="secondary-btn">Github</button>
                             </a>
                         </div>
                     </div>
