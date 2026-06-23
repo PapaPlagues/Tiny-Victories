@@ -17,7 +17,10 @@ const Comment = ({ username ,content, createdAt }) => {
     return(
         <div className="comment-card">
             <div className="comment-header">
-                <p>{username}</p>
+                <span className='comment-username'>
+                    <p>{username}</p>
+                </span>
+                
 
                 <span>
                     {formattedDate}

@@ -1,0 +1,60 @@
+.comment-form{
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+
+    background: var(--dark-secondary);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+}
+
+
+.comment-form h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    margin-bottom: 0.4rem;
+    font-weight: bold;
+}
+
+.form-group input,
+.form-group textarea {
+    background: var(--dark-background);
+    color: var(--dark-text);
+    
+    border: 1px solid rgba(255,255,255,0.01);
+    border-radius: 8px;
+
+    padding: 0.8rem;
+    font-size: 1rem;
+}
+
+.form-group textarea {
+    resize: vertical;
+}
+
+.comment-form button {
+    background: var(--dark-accent);
+    color: white;
+
+    border: none;
+    border-radius: 8px;
+
+    padding: 0.8rem 1.2rem;
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.comment-form button:hover {
+    transform: translateY(-1px);
+    opacity: 0.9;
+}
+

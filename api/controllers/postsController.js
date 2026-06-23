@@ -15,7 +15,8 @@ export const getPostById = async (req, res) => {
             id: postId
         },
         include: {
-            comments: true
+            comments: true,
+            author: true,
         }
     });
 

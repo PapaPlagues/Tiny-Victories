@@ -15,6 +15,7 @@ const Post = () => {
             .then(data => setPost(data));
     }, [postId]);
 
+    console.log(post);
     if (!post) {
         return <p>Loading post...</p>
     }
@@ -29,7 +30,7 @@ const Post = () => {
                 <div className="post-header-inner">
                     <h1>{post.title}</h1>
                     {/* make authorid show author name later */}
-                    <p>Posted by {post.authorId}</p>
+                    <p>Posted by {post.author.username}</p>
 
                     <p>Created at {" "}
                         {createdDate.toLocaleDateString("en-US", {
@@ -49,9 +50,9 @@ const Post = () => {
             <section id="post-body">
                 <div className="post-content">
                     <p>{post.content}</p>
-                </div>
 
-               <Comments post={post}/>
+                    <Comments post={post}/>
+                </div> 
             </section>
 
 
