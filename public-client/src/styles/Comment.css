@@ -1,0 +1,23 @@
+.comment-card {
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: var(--dark-secondary);
+}
+
+.comment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.comment-header span {
+    font-size: 0.85rem;
+    color: var(--dark-text);
+}
+
+.comment-card p {
+    margin: 0;
+    line-height: 1.5;
+}

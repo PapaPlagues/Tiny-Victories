@@ -33,5 +33,4 @@ postsRouter.post("/:postId/comments", createComment);
 // Delete comment
 postsRouter.delete("/:postId/comments/:commentId", verifyToken, requireAdmin, deleteComment);
 
-
 export default postsRouter;

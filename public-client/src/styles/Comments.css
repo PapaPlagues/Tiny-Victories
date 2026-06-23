@@ -1,0 +1,9 @@
+.comments-content {
+    margin-top: 3rem;
+}
+
+.comments-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}

@@ -42,7 +42,7 @@ function App() {
       {error && <p style={{ color: "red" }}>{error}</p>}
 
       {!loading && !error && (
-        <Outlet context={{ backendData }} />
+        <Outlet context={{ backendData, API_URL }} />
       )}
 
       <Footer />

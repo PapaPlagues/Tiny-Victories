@@ -1,32 +1,35 @@
 import { useOutletContext, useParams } from "react-router";
 import '../styles/Post.css';
+import { useEffect, useState } from "react";
+import Comments from "../components/Comments";
 
 const Post = () => {
-    const { backendData  = [] } = useOutletContext();
+    const { API_URL } = useOutletContext();
     const { postId } = useParams();
 
-    // wait until data exists
-    if (!backendData.length) {
+    const [post, setPost] = useState(null);
+
+    useEffect(() => {
+        fetch(`${API_URL}/posts/${postId}`)
+            .then(res => res.json())
+            .then(data => setPost(data));
+    }, [postId]);
+
+    if (!post) {
         return <p>Loading post...</p>
     }
 
-    const singlePost = backendData.find((post)=> String(post.id) === String(postId));
-
-    if (!singlePost) {
-        return <p>No post found</p>
-    }
-
-    const createdDate = new Date(singlePost.createdAt);
-    const updatedDate = new Date(singlePost.updatedAt);
+    const createdDate = new Date(post.createdAt);
+    const updatedDate = new Date(post.updatedAt);
 
     return(
         <>
             {/* can have image here too */}
             <header className="post-header">
                 <div className="post-header-inner">
-                    <h1>{singlePost.title}</h1>
+                    <h1>{post.title}</h1>
                     {/* make authorid show author name later */}
-                    <p>Posted by {singlePost.authorId}</p>
+                    <p>Posted by {post.authorId}</p>
 
                     <p>Created at {" "}
                         {createdDate.toLocaleDateString("en-US", {
@@ -45,19 +48,10 @@ const Post = () => {
 
             <section id="post-body">
                 <div className="post-content">
-                    <p>{singlePost.content}</p>
+                    <p>{post.content}</p>
                 </div>
 
-                <div className="comments-content">
-                    <h2>Comments</h2>
-
-                    <form action="">
-                        <label htmlFor="">Comment here: </label>
-                        <input type="text" />
-                    </form>
-                    
-                    <p>Comments</p>
-                </div>
+               <Comments post={post}/>
             </section>
 
 
