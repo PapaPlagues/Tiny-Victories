@@ -1,5 +1,5 @@
-import "../../styles/Card.css";
-import placeholderImage from "../../src/assets/placeholder.png";
+import "../styles/Card.css";
+import placeholderImage from "../assets/placeholder.png";
 
 function Card({ title, excerpt, img, link}) {
     return(

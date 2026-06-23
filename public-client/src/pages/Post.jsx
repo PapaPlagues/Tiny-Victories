@@ -47,7 +47,20 @@ const Post = () => {
                 <div className="post-content">
                     <p>{singlePost.content}</p>
                 </div>
+
+                <div className="comments-content">
+                    <h2>Comments</h2>
+
+                    <form action="">
+                        <label htmlFor="">Comment here: </label>
+                        <input type="text" />
+                    </form>
+                    
+                    <p>Comments</p>
+                </div>
             </section>
+
+
             
 
         </>

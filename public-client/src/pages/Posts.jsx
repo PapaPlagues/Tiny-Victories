@@ -1,5 +1,5 @@
 import { useOutletContext } from "react-router";
-import PostList from "../src/components/PostList";
+import PostList from "../components/PostList";
 import '../styles/Posts.css';
 
 const Posts = () => {

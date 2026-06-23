@@ -2,12 +2,12 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router';
 import App from './App.jsx';
-import Homepage from '../pages/Homepage.jsx';
-import About from '../pages/About.jsx';
-import Contact from '../pages/Contact.jsx';
-import ErrorPage from '../pages/ErrorPage.jsx'; 
-import Posts from '../pages/Posts.jsx';
-import Post from '../pages/Post.jsx';
+import Homepage from './pages/Homepage.jsx';
+import About from './pages/About.jsx';
+import Contact from './pages/Contact.jsx';
+import ErrorPage from './pages/ErrorPage.jsx'; 
+import Posts from './pages/Posts.jsx';
+import Post from './pages/Post.jsx';
 import './main.css';
 
 const router = createBrowserRouter([

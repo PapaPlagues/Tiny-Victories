@@ -1,6 +1,6 @@
-import PostList from "../src/components/PostList";
-import "../styles/Homepage.css";
-import heroImage from "../src/assets/pexels-timmossholder-3260289.jpg"
+import PostList from "../components/PostList";
+import '../styles/Homepage.css';
+import heroImage from "../assets/pexels-timmossholder-3260289.jpg";
 import { useOutletContext } from "react-router";
 
 const Homepage = () => {
