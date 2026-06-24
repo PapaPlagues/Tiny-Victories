@@ -1,0 +1,62 @@
+:root {
+  /* Dark Mode */
+  --dark-background:   #141118;
+  --dark-text: #edebf0;
+  --dark-primary: #b9abcf;
+  --dark-secondary: #4b3974;
+  --dark-accent: #825eba;
+
+  /* Light Mode */
+  --light-background: #eae7ee;
+  --light-text: #110f14;
+  --light-primary: #3e3054;
+  --light-seconday: #9d8bc6;
+  --light-accent: #6845a1;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--dark-background);
+  color: var(--dark-text);
+  font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  line-height: 1.6;
+
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+a { 
+    text-decoration: none;
+    color: var(--dark-text);
+    font-weight: 500;
+}
+
+.btn {
+    background: var(--dark-accent);
+    color: var(--dark-text);
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    margin-left: 1rem;
+
+    border: none;
+    border-radius: 6px;
+    font-weight: 550;
+
+    transition: transform 0.10s ease-in-out;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+}

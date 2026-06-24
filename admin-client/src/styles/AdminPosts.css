@@ -1,0 +1,31 @@
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 2rem;
+}
+
+.post-table {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.post-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 1.25rem;
+
+    background: var(--dark-secondary);
+
+    border-radius: 12px;
+}
+
+.post-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
