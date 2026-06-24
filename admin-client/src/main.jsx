@@ -6,15 +6,24 @@ import App from './App.jsx'
 import AdminPosts from './pages/AdminPosts.jsx';
 import ErrorPage from './pages/ErrorPage.jsx';
 import Login from './pages/Login.jsx';
+import ProtectedRoute from './ProtectedRoute.jsx';
 
+// redirect to admin page, but redirect to admin if not logged in when login works
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
     errorElement: <ErrorPage />,
     children: [
-      {index: true, element: <Login />},
-      {path: "admin", element: <AdminPosts />},
+      {path: "login", element: <Login />},
+
+
+      {path: "admin", element: <ProtectedRoute />,
+        children: [
+          { index: true, element: <AdminPosts />}
+        ],
+      },
+      
       // post id
     ]
   }

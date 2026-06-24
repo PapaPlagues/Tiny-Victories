@@ -1,5 +1,5 @@
 import '../styles/CommentsForm.css';
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useParams, useOutletContext } from "react-router";
 
 const CommentsForm = ({ setComments }) => {

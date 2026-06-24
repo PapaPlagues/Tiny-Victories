@@ -1,34 +1,43 @@
 import { Link } from "react-router";
 import '../styles/AdminPosts.css';
 import { useEffect, useState } from "react";
+import { useOutletContext} from "react-router";
+import { API_URL } from "../config/config";
 
 const AdminPosts = () => {
-    const [backendData, setBackendData] = useState([]);
+    const token = localStorage.getItem("token");
+
+    const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-
-    const API_URL = import.meta.env.VITE_API_URL;
-
+    
     useEffect(() => {
         const fetchPosts = async () => {
-        try{
-            setLoading(true);
-            setError(null);
+            try {
+                const res = await fetch(`${API_URL}/posts`, {
+                    headers: {
+                        "Authorization": `Bearer ${token}`
+                    }
+                });
 
-            const response = await fetch(API_URL)
+                const data = await res.json();
 
-        } catch (err) {
-            setError(err.message);
-        } finally {
-            setLoading(false);
-        }
+                if (!res.ok) {
+                    console.log("Failed to fetch posts");
+                    return;
+                }
+
+                setPosts(data);
+            } catch (err) {
+                console.error(err);
+            } finally {
+                setLoading(false);
+            }  
         };
 
         fetchPosts();
-    }, [API_URL]);
-
-
-
+    }, [API_URL, token]);
+   
+  
 
     return (
         <main id="posts-body">
@@ -43,6 +52,8 @@ const AdminPosts = () => {
                     + New Post
                 </Link>
             </div>
+
+            {loading && <p>Loading posts...</p>}
 
             <div className="post-table">
                 <div className="post-row">

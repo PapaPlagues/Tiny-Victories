@@ -23,7 +23,7 @@ app.use("/auth", authRouter);
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, (err) => {
     if (err) {
-        send(err);
+        console.error("Server error", err);
     }
 
     console.log(`Server running on PORT ${PORT}`);
