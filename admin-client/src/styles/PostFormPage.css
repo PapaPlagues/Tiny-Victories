@@ -1,0 +1,93 @@
+.post-form-page {
+    width: 100%;
+    padding: 3rem 2rem;
+
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.post-form-container {
+    width: 100%;
+    max-width: 900px;
+    display: flex;
+    flex-direction: column;
+
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+
+    border-radius: 14px;
+    padding: 2.5rem;
+
+    margin: 0 auto;
+
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+}
+
+.form-title {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    color: var(--dark-text);
+}
+
+/* FORM LAYOUT */
+.post-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* INPUT GROUPS */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-group label {
+    font-weight: 600;
+    color: var(--dark-primary);
+}
+
+/* INPUTS */
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 0.9rem 1rem;
+
+    background: var(--dark-background);
+    color: var(--dark-text);
+
+    border: 1px solid var(--dark-secondary);
+    border-radius: 10px;
+
+    font-size: 1rem;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 250px;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--dark-accent);
+    box-shadow: 0 0 0 2px rgba(130, 94, 186, 0.2);
+}
+
+/* CHECKBOX */
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    font-size: 0.95rem;
+}
+
+/* ACTION BUTTONS */
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1rem;
+}

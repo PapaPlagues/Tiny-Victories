@@ -1,6 +1,6 @@
 import '../styles/Login.css';
 import { useState } from "react";
-import { useOutletContext, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { API_URL } from "../config/config";
 
 const Login = () => {
