@@ -1,13 +1,14 @@
-import { Link } from "react-router";
 import '../styles/AdminPosts.css';
 import { useEffect, useState } from "react";
 import { API_URL } from "../config/config";
 import PostList from "../components/PostList";
+import { useOutletContext } from "react-router";
 
 const AdminPosts = () => {
+    const {posts, setPosts } = useOutletContext();
+    
     const token = localStorage.getItem("token");
 
-    const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
     
     useEffect(() => {

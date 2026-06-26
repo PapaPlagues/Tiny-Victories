@@ -15,6 +15,10 @@ export const loginAuth = async (req, res) => {
             return res.status(401).json({ error: "Invalid credentials" });
         };
 
+        if (user.role !== "ADMIN") {
+            return res.status(403).json({ error: "Access denied"});
+        }
+
         // check password
         const isValid = await bcrypt.compare(password, user.passwordHash);
 

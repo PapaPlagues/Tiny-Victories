@@ -7,12 +7,16 @@ const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
+    const [error, setError] = useState("");
+
     const navigate = useNavigate();
 
     const handleLogin = async (e) => {
         e.preventDefault();
+        setError("");
 
         try {
+
             const res = await fetch(`${API_URL}/auth/login`, {
                 method: 'POST',
                 headers: {
@@ -23,11 +27,8 @@ const Login = () => {
 
             const data = await res.json();
 
-            console.log("TOKEN:", data.token);
-
-
             if (!res.ok) {
-                console.log("Login failed");
+                setError(data.error || "Login failed");
                 return;
             }
 
@@ -48,6 +49,8 @@ const Login = () => {
             <div className="login-card">
                 <h1>Admin Login</h1>
                 <p>Sign in to manage blog posts and comments.</p>
+
+                {error && <p className="error-msg">{error}</p>}
 
                 <form action="" className="login-form" onSubmit={handleLogin}>
                     <div className="form-group">

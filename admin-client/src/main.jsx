@@ -26,16 +26,12 @@ const router = createBrowserRouter([
             element: <AdminLayout />,
             children: [
               {index: true, element: <AdminPosts />},
-              {path: "new", element: <PostForm mode="create" />},
+              {path: "new", element: <PostForm mode="create" onSubmit="POST" />},
               {path: ":postId/edit", element: <PostForm mode="edit" />}
-            ]
-          }
-         
-         
+            ],
+          },    
         ],
       },
-      
-      // post id
     ]
   }
 ]);

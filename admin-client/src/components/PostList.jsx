@@ -8,16 +8,15 @@ const PostList = ({ posts }) => {
 
     return(
         <div className="post-table">
-             <>
                 {posts.map((post) => (
                    <Card
+                        key={post.id}
                         title={post.title}
                         published={post.published}
                         id={post.id}
                     />
                 
                 ))}
-            </>
         </div>
        
     )
