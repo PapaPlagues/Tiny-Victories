@@ -1,15 +1,22 @@
 import '../styles/Login.css';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { API_URL } from "../config/config";
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-
     const [error, setError] = useState("");
 
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+
+        if (token) {
+            navigate("/admin");
+        }
+    }, []);
 
     const handleLogin = async (e) => {
         e.preventDefault();

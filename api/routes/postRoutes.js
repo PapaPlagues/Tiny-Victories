@@ -16,7 +16,7 @@ postsRouter.get("/:postId", getPostById);
 postsRouter.post("/", verifyToken, requireAdmin, createPost);
 
 // Update post
-postsRouter.put("/:postId", verifyToken, requireAdmin, updatePost);
+postsRouter.patch("/:postId", verifyToken, requireAdmin, updatePost);
 
 // Delete post
 postsRouter.delete("/:postId", verifyToken, requireAdmin, deletePost);

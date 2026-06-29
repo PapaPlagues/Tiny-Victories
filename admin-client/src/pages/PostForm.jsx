@@ -1,42 +1,71 @@
 import '../styles/PostFormPage.css';
-import { useState } from "react";
-import { API_URL } from '../config/config';
-import { useOutletContext } from "react-router";
+import { useState, useEffect } from "react";
+import { useOutletContext, useParams, useNavigate } from "react-router";
+import { getPost, createPost, updatePost } from '../services/postService';
 
 const PostForm = ({ mode }) => {
-
     const { setPosts } = useOutletContext();
+    const { postId } = useParams();
+    const navigate = useNavigate();
 
     const token = localStorage.getItem("token");
-
+    
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
+    const [published, setPublished] = useState(false);
+
+   useEffect(() => {
+    setTitle("");
+    setContent("");
+    setPublished(false);
+
+    if (!postId) return;
+
+    const loadPost = async () => {
+        const data = await getPost(postId);
+
+        setTitle(data.title);
+        setContent(data.content);
+        setPublished(data.published);
+    };
+
+    loadPost();
+}, [postId]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const postSetting = {
-            method: 'POST',
-            headers: { 'Content-Type' : 'application/json', 'Authorization' : `Bearer ${token}` },
-            body: JSON.stringify({ title, content })
-        };
-
         try {
+            let post;
 
-            const res = await fetch(`${API_URL}/posts`, postSetting);
+            if (mode === 'create') {
 
-            const newPost = await res.json();
+                post = await createPost({
+                    title, 
+                    content, 
+                    published, 
+                    token,
+                });
+                
+                setPosts((prev) => [...prev, post]);
 
-            if (!res.ok) {
-                console.log("Failed to create post");
-                return;
+                setTitle("");
+                setContent("");
+            } else {
+               
+                post = await updatePost(postId, {
+                    title,
+                    content,
+                    published,
+                    token,
+                });
+
+                setPosts(prev => 
+                    prev.map(p => p.id === post.id ? post : p)
+                );
             }
 
-            // maybe with createpost? then prev => [...prev, newPost]
-            setPosts((prev) => [...prev, newPost]);
-
-            setTitle("");
-            setContent("");
+            navigate("/admin");
         } catch(err){
             console.error(err);
         }
@@ -85,7 +114,12 @@ const PostForm = ({ mode }) => {
                     </div>
 
                     <div className="checkbox-group">
-                        <input type="checkbox" id="published" />
+                        <input 
+                            type="checkbox" 
+                            id="published"
+                            checked={published}
+                            onChange={(e) => setPublished(e.target.checked)} 
+                        />
                         <label htmlFor="published">
                             Publish immediately
                         </label>
@@ -96,7 +130,7 @@ const PostForm = ({ mode }) => {
                             {mode === "edit" ? "Save Changes" : "Create Post"}
                         </button>
 
-                        <button type="button" className="btn" id="secondary-btn">
+                        <button type="button" className="btn" id="secondary-btn" onClick={() => navigate("/admin")}>
                             Cancel
                         </button>
                     </div>

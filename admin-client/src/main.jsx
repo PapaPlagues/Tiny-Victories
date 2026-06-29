@@ -7,7 +7,7 @@ import AdminPosts from './pages/AdminPosts.jsx';
 import ErrorPage from './pages/ErrorPage.jsx';
 import Login from './pages/Login.jsx';
 import ProtectedRoute from './ProtectedRoute.jsx';
-import PostForm from './pages/PostFormPage.jsx';
+import PostForm from './pages/PostForm.jsx';
 import AdminLayout from './pages/AdminLayout.jsx';
 
 // redirect to admin page, but redirect to admin if not logged in when login works
@@ -26,8 +26,8 @@ const router = createBrowserRouter([
             element: <AdminLayout />,
             children: [
               {index: true, element: <AdminPosts />},
-              {path: "new", element: <PostForm mode="create" onSubmit="POST" />},
-              {path: ":postId/edit", element: <PostForm mode="edit" />}
+              {path: "new", element: <PostForm mode="create" method='POST' />},
+              {path: ":postId/edit", element: <PostForm mode="edit" method='PUT' />}
             ],
           },    
         ],

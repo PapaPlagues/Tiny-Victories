@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { API_URL } from "../config/config";
 import PostList from "../components/PostList";
 import { useOutletContext } from "react-router";
+import { getPosts } from '../services/postService';
 
 const AdminPosts = () => {
     const {posts, setPosts } = useOutletContext();
@@ -14,19 +15,9 @@ const AdminPosts = () => {
     useEffect(() => {
         const fetchPosts = async () => {
             try {
-                const res = await fetch(`${API_URL}/posts`, {
-                    headers: {
-                        "Authorization": `Bearer ${token}`
-                    }
-                });
+                let posts = await getPosts(token);
 
-                if (!res.ok) {
-                    console.log("Failed to fetch posts");
-                    return;
-                }
-
-                const data = await res.json();
-                setPosts(data);
+                setPosts(posts);
             } catch (err) {
                 console.error(err);
             } finally {
