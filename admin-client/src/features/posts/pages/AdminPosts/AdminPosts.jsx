@@ -3,20 +3,22 @@ import { useEffect, useState } from "react";
 import { API_URL } from "../../../../config/config";
 import PostList from "../../components/PostList/PostList";
 import { useOutletContext } from "react-router";
-import { getPosts } from '../../api/postService';
+import { getPosts, deletePost } from '../../api/postService';
+import ConfirmModal from '../../components/ConfirmModal/ConfirmModal';
+
 
 const AdminPosts = () => {
     const {posts, setPosts } = useOutletContext();
-    
-    const token = localStorage.getItem("token");
 
     const [loading, setLoading] = useState(true);
+    const [deleteId, setDeleteId] = useState(null);
+
+    const token = localStorage.getItem("token");
     
     useEffect(() => {
         const fetchPosts = async () => {
             try {
                 let posts = await getPosts(token);
-
                 setPosts(posts);
             } catch (err) {
                 console.error(err);
@@ -27,6 +29,22 @@ const AdminPosts = () => {
 
         fetchPosts();
     }, [API_URL, token]);
+
+    const handleDelete = async () => {
+        try {
+            await deletePost(deleteId, { token });
+
+            setPosts(prev =>
+                prev.filter(p => p.id !== deleteId)
+            );
+
+        } catch (err) {
+            console.error(err);
+        } finally {
+            setDeleteId(null);
+        }
+    };
+
    
   
 
@@ -36,7 +54,19 @@ const AdminPosts = () => {
 
             {loading && <p>Loading posts...</p>}
 
-           <PostList posts={posts}/>
+           <PostList
+                posts={posts}
+                onDelete={(id) => setDeleteId(id)}
+            />
+
+            <ConfirmModal
+                isOpen={deleteId !== null}
+                title="Delete Post"
+                message="Are you sure you want to delete this post? This cannot be undone."
+                confirmText="Delete"
+                onCancel={() => setDeleteId(null)}
+                onConfirm={handleDelete}
+            />
         </main>
     );
 };

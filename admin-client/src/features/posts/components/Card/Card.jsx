@@ -1,6 +1,26 @@
+import { updatePost, deletePost, getPosts } from '../../api/postService';
 import './Card.css'
-import { Link } from 'react-router';
-const Card = ({ title, published, id }) => {
+import { Link, useOutletContext } from 'react-router';
+
+const Card = ({ title, published, id, onDelete }) => {
+    const { setPosts } = useOutletContext();
+    const token = localStorage.getItem("token");
+
+    const handlePublish = async () => {
+        try {
+            const post = await updatePost(id, { 
+                token,
+                published: !published,
+            });
+
+            setPosts(prev =>
+                prev.map(p => p.id === post.id ? post : p)
+            );
+
+        } catch (err) {
+            console.error(err);
+        }
+    }
 
     return(
     <div className="post-row">
@@ -18,11 +38,19 @@ const Card = ({ title, published, id }) => {
             Edit
             </Link>
 
-            <button className="btn" id="secondary-btn">
+            <button 
+                className="btn" 
+                id="secondary-btn"
+                onClick={handlePublish}
+            >
                 {published ? "Unpublish" : "Publish"}
             </button>
 
-            <button className="btn" id="secondary-btn">
+            <button 
+                className="btn" 
+                id="secondary-btn"
+                onClick={() => onDelete(id)}
+            >
                 Delete
             </button>
         </div>

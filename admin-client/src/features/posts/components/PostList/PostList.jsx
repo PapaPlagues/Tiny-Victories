@@ -1,7 +1,7 @@
 import Card from "../Card/Card";
 import './PostList.css';
 
-const PostList = ({ posts }) => {
+const PostList = ({ posts, onDelete }) => {
     if (!posts || posts.length === 0) {
         return <p>No posts available.</p>
     }
@@ -14,6 +14,7 @@ const PostList = ({ posts }) => {
                         title={post.title}
                         published={post.published}
                         id={post.id}
+                        onDelete={onDelete}
                     />
                 
                 ))}

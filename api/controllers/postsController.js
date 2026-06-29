@@ -66,6 +66,7 @@ export const updatePost = async (req, res) => {
 export const deletePost = async (req, res) => {
     try {
         const { postId } = req.params;
+        console.log("DELETE postId:", postId);
 
         const post = await prisma.post.delete({
             where: { id: postId }

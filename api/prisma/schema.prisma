@@ -30,6 +30,13 @@ model User {
   posts Post[]
 }
 
+model Tag {
+  id String @id @default(cuid())
+  name String @unique
+
+  posts Post[] @relation("PostTags")
+}
+
 model Post {
   id String @id @default(cuid())
   title String
@@ -43,6 +50,8 @@ model Post {
   author User @relation(fields: [authorId], references: [id])
 
   comments Comment[]
+
+  tags Tag[] @relation("PostTags")
 }
 
 model Comment {

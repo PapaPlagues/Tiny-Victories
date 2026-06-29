@@ -60,7 +60,7 @@ export const updatePost = async (id, { token, ...payload}) => {
 };
 
 // DELETE post
-export const deletePost = async (id, token) => {
+export const deletePost = async (id, { token }) => {
     const res = await fetch(`${API_URL}/posts/${id}`, {
         method: "DELETE",
         headers: {
