@@ -1,7 +1,7 @@
-import '../styles/PostFormPage.css';
+import './PostFormPage.css';
 import { useState, useEffect } from "react";
 import { useOutletContext, useParams, useNavigate } from "react-router";
-import { getPost, createPost, updatePost } from '../services/postService';
+import { getPost, createPost, updatePost } from '../../api/postService';
 
 const PostForm = ({ mode }) => {
     const { setPosts } = useOutletContext();

@@ -1,9 +1,9 @@
-import '../styles/AdminPosts.css';
+import './AdminPosts.css';
 import { useEffect, useState } from "react";
-import { API_URL } from "../config/config";
-import PostList from "../components/PostList";
+import { API_URL } from "../../../../config/config";
+import PostList from "../../components/PostList/PostList";
 import { useOutletContext } from "react-router";
-import { getPosts } from '../services/postService';
+import { getPosts } from '../../api/postService';
 
 const AdminPosts = () => {
     const {posts, setPosts } = useOutletContext();

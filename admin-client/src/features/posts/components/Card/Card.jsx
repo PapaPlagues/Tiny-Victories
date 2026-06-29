@@ -1,4 +1,4 @@
-import '../styles/Card.css';
+import './Card.css'
 import { Link } from 'react-router';
 const Card = ({ title, published, id }) => {
 

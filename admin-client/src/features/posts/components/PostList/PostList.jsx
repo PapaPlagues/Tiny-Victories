@@ -1,5 +1,5 @@
-import Card from "./Card";
-import '../styles/PostList.css';
+import Card from "../Card/Card";
+import './PostList.css';
 
 const PostList = ({ posts }) => {
     if (!posts || posts.length === 0) {

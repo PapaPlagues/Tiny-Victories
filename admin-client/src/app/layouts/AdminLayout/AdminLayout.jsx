@@ -1,6 +1,6 @@
 import { Outlet, Link, useNavigate } from "react-router";
 import { useState } from "react";
-import "../styles/AdminLayout.css";
+import "./AdminLayout.css";
 
 const AdminLayout = () => {
     const [posts, setPosts] = useState([]);

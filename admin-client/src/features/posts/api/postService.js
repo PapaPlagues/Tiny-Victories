@@ -1,4 +1,4 @@
-import { API_URL } from '../config/config';
+import { API_URL } from '../../../config/config';
 
 const handleReponse = async (res) => {
     const data = await res.json();
