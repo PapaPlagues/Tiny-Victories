@@ -15,6 +15,7 @@ const initialFormState = {
     title: "",
     content: "",
     image: null,
+    imageUrl: null,
     tags: [],
     published: false,
 };
@@ -41,6 +42,7 @@ const PostForm = ({ mode }) => {
             title: data.title || "",
             content: data.content || "",
             image: null,
+            imageUrl: data.imageUrl || null,
             tags: data.tags || [],
             published: data.published || false,
         });
@@ -50,39 +52,43 @@ const PostForm = ({ mode }) => {
 }, [postId]);
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
+    e.preventDefault();
 
-        try {
-            let post;
+    try {
+        let post;
 
-            if (mode === "create") {
-                post = await createPost({
-                    ...form,
-                    token
-                });
+        const payload = {
+            title: form.title,
+            content: form.content,
+            published: form.published,
+            tags: form.tags,
+            image: form.image,
+        };
 
-                setPosts(prev => [...prev, post]);
+        if (mode === "create") {
+            post = await createPost({
+                token,
+                ...payload,
+            });
 
-            } else {
+            setPosts(prev => [...prev, post]);
+        } else {
+            post = await updatePost(postId, {
+                token,
+                ...payload,
+            });
 
-                post = await updatePost(postId, {
-                    token,
-                    payload: form,
-                });
-
-                setPosts(prev =>
-                    prev.map(p =>
-                        p.id === post.id ? post : p
-                    )
-                );
-            }
-
-            navigate("/admin");
-
-        } catch (err) {
-            console.error(err);
+            setPosts(prev =>
+                prev.map(p => (p.id === post.id ? post : p))
+            );
         }
-    };
+
+        navigate("/admin");
+
+    } catch (err) {
+        console.error(err);
+    }
+};
 
     return (
         <div className="post-form-page">

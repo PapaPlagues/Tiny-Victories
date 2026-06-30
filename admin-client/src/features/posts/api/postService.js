@@ -42,13 +42,8 @@ export const createPost = async ({
     formData.append("content", content);
     formData.append("published", published);
 
-    if (image) {
-        formData.append("image", image);
-    }
-
-    if (tags) {
-        formData.append("tags", JSON.stringify(tags));
-    }
+    if (image) formData.append("image", image);
+    if (tags) formData.append("tags", JSON.stringify(tags));
 
     const res = await fetch(`${API_URL}/posts`, {
         method: "POST",
@@ -62,7 +57,7 @@ export const createPost = async ({
 };
 
 // UPDATE post (PATCH)
-export const updatePost = async (id, { token, payload }) => {
+export const updatePost = async (id, { token, ...payload }) => {
     const formData = new FormData();
 
     Object.entries(payload || {}).forEach(([key, value]) => {

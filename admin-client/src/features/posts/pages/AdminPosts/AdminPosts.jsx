@@ -12,13 +12,14 @@ const AdminPosts = () => {
 
     const [loading, setLoading] = useState(true);
     const [deleteId, setDeleteId] = useState(null);
+    const [error, setError] = useState(null);
 
     const token = localStorage.getItem("token");
     
     useEffect(() => {
         const fetchPosts = async () => {
             try {
-                let posts = await getPosts(token);
+                let posts = await getPosts({ token });
                 setPosts(posts);
             } catch (err) {
                 console.error(err);
@@ -32,6 +33,7 @@ const AdminPosts = () => {
 
     const handleDelete = async () => {
         try {
+            setError(null);
             await deletePost(deleteId, { token });
 
             setPosts(prev =>
@@ -39,7 +41,8 @@ const AdminPosts = () => {
             );
 
         } catch (err) {
-            console.error(err);
+            console.error("Delete error:", err);
+            setError(err.message || "Failed to delete post");
         } finally {
             setDeleteId(null);
         }
@@ -52,6 +55,7 @@ const AdminPosts = () => {
         <main id="posts-body">
             <h1>Posts</h1>
 
+            {error && <p style={{ color: 'red' }}>{error}</p>}
             {loading && <p>Loading posts...</p>}
 
            <PostList

@@ -1,10 +1,25 @@
 import { prisma } from "../lib/prisma.js";
 import cloudinary from "../lib/cloudinary.js";
+import { Readable } from "stream";
 
 const parseBoolean = (value) => {
     if (typeof value === "boolean") return value;
     if (typeof value === "string") return value === "true";
     return false;
+};
+
+const uploadBufferToCloudinary = async (buffer) => {
+    return new Promise((resolve, reject) => {
+        const uploadStream = cloudinary.uploader.upload_stream(
+            { folder: "posts" },
+            (error, result) => {
+                if (error) return reject(error);
+                resolve(result);
+            }
+        );
+
+        Readable.from(buffer).pipe(uploadStream);
+    });
 };
 
 // Get all posts
@@ -46,10 +61,7 @@ export const createPost = async (req, res) => {
         let imageUrl = null;
 
         if (req.file) {
-            const result = await cloudinary.uploader.upload(req.file.path, {
-                folder: "posts",
-            });
-
+            const result = await uploadBufferToCloudinary(req.file.buffer);
             imageUrl = result.secure_url;
         }
 
@@ -85,10 +97,7 @@ export const updatePost = async (req, res) => {
         let imageUrl;
 
         if (req.file) {
-            const result = await cloudinary.uploader.upload(req.file.path, {
-                folder: "posts",
-            });
-
+            const result = await uploadBufferToCloudinary(req.file.buffer);
             imageUrl = result.secure_url;
         }
 

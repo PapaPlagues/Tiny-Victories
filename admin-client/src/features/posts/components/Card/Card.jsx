@@ -6,23 +6,18 @@ const Card = ({ title, published, id, onDelete }) => {
     const { setPosts } = useOutletContext();
     const token = localStorage.getItem("token");
 
-  const handlePublish = async () => {
+    const handlePublish = async () => {
         try {
             const updated = await updatePost(id, {
                 token,
-                payload: {
-                    published: !published,
-                },
+                published: !published,
             });
 
             setPosts(prev =>
                 prev.map(p =>
-                    p.id === id
-                        ? updated
-                        : p
+                    p.id === updated.id ? updated : p
                 )
             );
-
         } catch (err) {
             console.error(err);
         }
