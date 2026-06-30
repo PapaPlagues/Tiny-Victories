@@ -7,6 +7,23 @@ const FormFields = ({ form, setForm }) => {
         }));
     };
 
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            updateField("image", file);
+            
+            // Create preview
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setForm(prev => ({
+                    ...prev,
+                    imagePreview: reader.result
+                }));
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
     return (
         <>
             {/* Title */}
@@ -23,10 +40,10 @@ const FormFields = ({ form, setForm }) => {
 
             {/* Image Preview */}
             <div className="form-group">    
-                   {form.imageUrl && (
+                {(form.imagePreview || form.imageUrl) && (
                 <img
-                    src={form.imageUrl}
-                    alt="Current"
+                    src={form.imagePreview || form.imageUrl}
+                    alt="Preview"
                     style={{ width: "150px", marginBottom: "10px" }}
                 />
             )}
@@ -38,7 +55,8 @@ const FormFields = ({ form, setForm }) => {
                 <input
                     type="file"
                     id="image"
-                    onChange={(e) => updateField("image", e.target.files[0])}
+                    accept="image/*"
+                    onChange={handleImageChange}
                 />
             </div>
 

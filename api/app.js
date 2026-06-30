@@ -4,6 +4,7 @@ import cors from "cors";
 import postsRouter from "./routes/postRoutes.js";
 import authRouter from "./routes/authRoutes.js";
 import multer from "multer";
+import { v2 as cloudinary } from "cloudinary";
 
 const app = express();
 
@@ -15,9 +16,16 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use("/uploads", express.static("uploads"));
+
 // Routes
 app.use("/posts", postsRouter);
 app.use("/auth", authRouter);
+
+app.get("/test-cloudinary", async (req, res) => {
+    const result = await cloudinary.api.ping();
+    res.json(result);
+});
 
 // Global error handler
 app.use((err, req, res, next) => {
@@ -39,6 +47,10 @@ app.listen(PORT, (err) => {
     if (err) {
         console.error("Server error", err);
     }
+
+    console.log("CLOUD NAME:", process.env.CLOUD_NAME);
+    console.log("API KEY EXISTS:", !!process.env.CLOUD_API_KEY);
+    console.log("SECRET EXISTS:", !!process.env.CLOUD_API_SECRET);
 
     console.log(`Server running on PORT ${PORT}`);
 });

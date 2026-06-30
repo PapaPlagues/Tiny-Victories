@@ -1,25 +1,9 @@
 import { prisma } from "../lib/prisma.js";
-import cloudinary from "../lib/cloudinary.js";
-import { Readable } from "stream";
 
 const parseBoolean = (value) => {
     if (typeof value === "boolean") return value;
     if (typeof value === "string") return value === "true";
     return false;
-};
-
-const uploadBufferToCloudinary = async (buffer) => {
-    return new Promise((resolve, reject) => {
-        const uploadStream = cloudinary.uploader.upload_stream(
-            { folder: "posts" },
-            (error, result) => {
-                if (error) return reject(error);
-                resolve(result);
-            }
-        );
-
-        Readable.from(buffer).pipe(uploadStream);
-    });
 };
 
 // Get all posts
@@ -61,8 +45,10 @@ export const createPost = async (req, res) => {
         let imageUrl = null;
 
         if (req.file) {
-            const result = await uploadBufferToCloudinary(req.file.buffer);
-            imageUrl = result.secure_url;
+            console.log("Processing local image upload:", req.file.originalname, req.file.size, req.file.filename);
+            const origin = `${req.protocol}://${req.get("host")}`;
+            imageUrl = `${origin}/uploads/${req.file.filename}`;
+            console.log("Local image saved at:", imageUrl);
         }
 
         const post = await prisma.post.create({
@@ -94,28 +80,32 @@ export const updatePost = async (req, res) => {
         const { postId } = req.params;
         const { title, content, published, tags } = req.body;
 
-        let imageUrl;
+        let imageUrl = null;
 
         if (req.file) {
-            const result = await uploadBufferToCloudinary(req.file.buffer);
-            imageUrl = result.secure_url;
+            console.log("Processing local image update:", req.file.originalname, req.file.size, req.file.filename);
+            const origin = `${req.protocol}://${req.get("host")}`;
+            imageUrl = `${origin}/uploads/${req.file.filename}`;
+            console.log("Local image updated at:", imageUrl);
         }
+
+        const updateData = {};
+        
+        if (title !== undefined) updateData.title = title;
+        if (content !== undefined) updateData.content = content;
+        if (published !== undefined) updateData.published = parseBoolean(published);
+        if (imageUrl) updateData.imageUrl = imageUrl;
 
         const post = await prisma.post.update({
             where: { id: postId },
-            data: {
-                title,
-                content,
-                published: parseBoolean(published),
-                ...(imageUrl && { imageUrl }),
-            },
+            data: updateData,
         });
 
         res.json(post);
 
     } catch (err) {
         console.error("UPDATE ERROR:", err);
-        res.status(500).json({ error: "Update failed" });
+        res.status(500).json({ error: err.message || "Update failed" });
     }
 };
 

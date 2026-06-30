@@ -4,7 +4,9 @@ const handleResponse = async (res) => {
     const data = await res.json();
 
     if (!res.ok) {
-        throw new Error(data?.error || "Something went wrong");
+        const errorMsg = data?.error || `HTTP ${res.status}: Something went wrong`;
+        console.error("API Error:", { status: res.status, error: data });
+        throw new Error(errorMsg);
     }
 
     return data;
@@ -42,7 +44,10 @@ export const createPost = async ({
     formData.append("content", content);
     formData.append("published", published);
 
-    if (image) formData.append("image", image);
+    if (image) {
+        console.log("Appending image file:", image);
+        formData.append("image", image);
+    }
     if (tags) formData.append("tags", JSON.stringify(tags));
 
     const res = await fetch(`${API_URL}/posts`, {
@@ -66,6 +71,9 @@ export const updatePost = async (id, { token, ...payload }) => {
         if (key === "tags") {
             formData.append("tags", JSON.stringify(value));
         } else {
+            if (key === "image" && value) {
+                console.log("Appending image file to update:", value);
+            }
             formData.append(key, value);
         }
     });

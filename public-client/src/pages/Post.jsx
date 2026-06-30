@@ -25,7 +25,14 @@ const Post = () => {
 
     return(
         <>
-            {/* can have image here too */}
+            {post.imageUrl && (
+                <img
+                    src={post.imageUrl}
+                    alt={post.title}
+                    className="post-cover"
+                    style={{ width: "100%", maxHeight: "400px", objectFit: "cover", marginBottom: "1rem" }}
+                />
+            )}
             <header className="post-header">
                 <div className="post-header-inner">
                     <h1>{post.title}</h1>

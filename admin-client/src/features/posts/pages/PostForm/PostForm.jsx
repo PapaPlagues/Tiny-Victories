@@ -16,6 +16,7 @@ const initialFormState = {
     content: "",
     image: null,
     imageUrl: null,
+    imagePreview: null,
     tags: [],
     published: false,
 };
@@ -28,6 +29,7 @@ const PostForm = ({ mode }) => {
     const token = localStorage.getItem("token");
 
     const [form, setForm] = useState(initialFormState);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
     if (!postId) {
@@ -43,6 +45,7 @@ const PostForm = ({ mode }) => {
             content: data.content || "",
             image: null,
             imageUrl: data.imageUrl || null,
+            imagePreview: null,
             tags: data.tags || [],
             published: data.published || false,
         });
@@ -53,6 +56,7 @@ const PostForm = ({ mode }) => {
 
     const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(null);
 
     try {
         let post;
@@ -86,7 +90,8 @@ const PostForm = ({ mode }) => {
         navigate("/admin");
 
     } catch (err) {
-        console.error(err);
+        console.error("Submit error:", err);
+        setError(err.message || "Failed to save post");
     }
 };
 
@@ -100,6 +105,8 @@ const PostForm = ({ mode }) => {
                         ? "Edit Post"
                         : "Create Post"}
                 </h1>
+
+                {error && <p style={{ color: 'red', marginBottom: '1rem' }}>{error}</p>}
 
                 <form
                     className="post-form"

@@ -13,6 +13,7 @@ const PostList = ({ posts }) => {
                     key={post.id}
                     title={post.title}
                     excerpt={post.content}
+                    img={post.imageUrl}
                     link={`/posts/${post.id}`}
                 />
             ))}
