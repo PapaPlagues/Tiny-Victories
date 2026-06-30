@@ -11,6 +11,14 @@ import {
 import FormFields from './FormFields';
 import FormActions from './FormActions';
 
+const initialFormState = {
+    title: "",
+    content: "",
+    image: null,
+    tags: [],
+    published: false,
+};
+
 const PostForm = ({ mode }) => {
     const { setPosts } = useOutletContext();
     const { postId } = useParams();
@@ -18,27 +26,28 @@ const PostForm = ({ mode }) => {
 
     const token = localStorage.getItem("token");
 
-    const [title, setTitle] = useState("");
-    const [content, setContent] = useState("");
-    const [published, setPublished] = useState(false);
+    const [form, setForm] = useState(initialFormState);
 
     useEffect(() => {
-        setTitle("");
-        setContent("");
-        setPublished(false);
+    if (!postId) {
+        setForm(initialFormState);
+        return;
+    }
 
-        if (!postId) return;
+    const loadPost = async () => {
+        const data = await getPost(postId);
 
-        const loadPost = async () => {
-            const data = await getPost(postId);
+        setForm({
+            title: data.title || "",
+            content: data.content || "",
+            image: null,
+            tags: data.tags || [],
+            published: data.published || false,
+        });
+    };
 
-            setTitle(data.title);
-            setContent(data.content);
-            setPublished(data.published);
-        };
-
-        loadPost();
-    }, [postId]);
+    loadPost();
+}, [postId]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -48,25 +57,17 @@ const PostForm = ({ mode }) => {
 
             if (mode === "create") {
                 post = await createPost({
-                    title,
-                    content,
-                    published,
-                    token,
+                    ...form,
+                    token
                 });
 
                 setPosts(prev => [...prev, post]);
 
-                setTitle("");
-                setContent("");
-                setPublished(false);
-
             } else {
 
                 post = await updatePost(postId, {
-                    title,
-                    content,
-                    published,
                     token,
+                    payload: form,
                 });
 
                 setPosts(prev =>
@@ -100,12 +101,7 @@ const PostForm = ({ mode }) => {
                 >
 
                     <FormFields
-                        title={title}
-                        setTitle={setTitle}
-                        content={content}
-                        setContent={setContent}
-                        published={published}
-                        setPublished={setPublished}
+                        form={form} setForm={setForm}
                     />
 
                     <FormActions

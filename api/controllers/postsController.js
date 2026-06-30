@@ -1,4 +1,11 @@
 import { prisma } from "../lib/prisma.js";
+import cloudinary from "../lib/cloudinary.js";
+
+const parseBoolean = (value) => {
+    if (typeof value === "boolean") return value;
+    if (typeof value === "string") return value === "true";
+    return false;
+};
 
 // Get all posts
 export const getPosts = async (req, res) => {
@@ -29,37 +36,78 @@ export const getPostById = async (req, res) => {
 
 // Create Post
 export const createPost = async (req, res) => {
-    const {title, content} = req.body;
+    try {
+        const { title, content, published, tags } = req.body;
 
-    const post = await prisma.post.create({
-        data: {
-            title,
-            content,
-            published: false,
-
-            authorId: req.user.userId
+        if (!title || !content) {
+            return res.status(400).json({ error: "Missing title or content" });
         }
-    });
-    res.status(201).json(post);
-};
 
+        let imageUrl = null;
+
+        if (req.file) {
+            const result = await cloudinary.uploader.upload(req.file.path, {
+                folder: "posts",
+            });
+
+            imageUrl = result.secure_url;
+        }
+
+        const post = await prisma.post.create({
+            data: {
+                title,
+                content,
+                published: published === "true" || published === true,
+                imageUrl,
+                authorId: req.user.userId,
+                // add tags
+            },
+        });
+
+        console.log(req.body);
+        console.log(req.file);
+
+        return res.status(201).json(post);
+
+    } catch (err) {
+        console.error("CREATE ERROR:", err);
+        return res.status(500).json({
+            error: err.message || "Create failed"
+        });
+    }
+};
 // Update post
 export const updatePost = async (req, res) => {
     try {
-        const { title, content, published } = req.body;
         const { postId } = req.params;
+        const { title, content, published, tags } = req.body;
+
+        let imageUrl;
+
+        if (req.file) {
+            const result = await cloudinary.uploader.upload(req.file.path, {
+                folder: "posts",
+            });
+
+            imageUrl = result.secure_url;
+        }
 
         const post = await prisma.post.update({
             where: { id: postId },
-            data: { title, content, published },
+            data: {
+                title,
+                content,
+                published: parseBoolean(published),
+                ...(imageUrl && { imageUrl }),
+            },
         });
 
         res.json(post);
 
     } catch (err) {
-        res.status(404).json({ error: "Post not found" });
+        console.error("UPDATE ERROR:", err);
+        res.status(500).json({ error: "Update failed" });
     }
-    
 };
 
 // Delete post

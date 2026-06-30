@@ -1,6 +1,6 @@
 import { API_URL } from '../../../config/config';
 
-const handleReponse = async (res) => {
+const handleResponse = async (res) => {
     const data = await res.json();
 
     if (!res.ok) {
@@ -13,50 +13,77 @@ const handleReponse = async (res) => {
 // GET all posts
 export const getPosts = async ({ token }) => {
     const res = await fetch(`${API_URL}/posts`, {
-        headers: { 
-            "Authorization" : `Bearer ${token}`,
+        headers: {
+            Authorization: `Bearer ${token}`,
         },
     });
 
-    return handleReponse(res);
-}
+    return handleResponse(res);
+};
 
 // GET single post
 export const getPost = async (id) => {
     const res = await fetch(`${API_URL}/posts/${id}`);
-    return handleReponse(res);
+    return handleResponse(res);
 };
 
 // CREATE post
-export const createPost = async ({ token, title, content, published }) => {
+export const createPost = async ({
+    token,
+    title,
+    content,
+    published,
+    image,
+    tags,
+}) => {
+    const formData = new FormData();
+
+    formData.append("title", title);
+    formData.append("content", content);
+    formData.append("published", published);
+
+    if (image) {
+        formData.append("image", image);
+    }
+
+    if (tags) {
+        formData.append("tags", JSON.stringify(tags));
+    }
+
     const res = await fetch(`${API_URL}/posts`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({
-            title,
-            content,
-            published,
-        }),
+        body: formData,
     });
 
-    return handleReponse(res);
-}
+    return handleResponse(res);
+};
 
 // UPDATE post (PATCH)
-export const updatePost = async (id, { token, ...payload}) => {
+export const updatePost = async (id, { token, payload }) => {
+    const formData = new FormData();
+
+    Object.entries(payload || {}).forEach(([key, value]) => {
+        if (value === undefined || value === null) return;
+
+        if (key === "tags") {
+            formData.append("tags", JSON.stringify(value));
+        } else {
+            formData.append(key, value);
+        }
+    });
+
     const res = await fetch(`${API_URL}/posts/${id}`, {
         method: "PATCH",
         headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(payload),
+        body: formData,
     });
 
-    return handleReponse(res);
+    return handleResponse(res);
 };
 
 // DELETE post
@@ -64,10 +91,9 @@ export const deletePost = async (id, { token }) => {
     const res = await fetch(`${API_URL}/posts/${id}`, {
         method: "DELETE",
         headers: {
-            "Content-Type": "application/json",
-            "Authorization" : `Bearer ${token}`,
-        }
+            Authorization: `Bearer ${token}`,
+        },
     });
 
-    return handleReponse(res);
-}
+    return handleResponse(res);
+};

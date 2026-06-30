@@ -8,7 +8,7 @@ import ConfirmModal from '../../components/ConfirmModal/ConfirmModal';
 
 
 const AdminPosts = () => {
-    const {posts, setPosts } = useOutletContext();
+    const {posts, setPosts} = useOutletContext();
 
     const [loading, setLoading] = useState(true);
     const [deleteId, setDeleteId] = useState(null);

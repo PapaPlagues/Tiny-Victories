@@ -2,14 +2,13 @@ import { prisma } from "./lib/prisma.js";
 import bcrypt from "bcryptjs";
 
 async function main() {
-    //  RESET DATABASE
     await prisma.comment.deleteMany();
     await prisma.post.deleteMany();
+    await prisma.tag.deleteMany();
     await prisma.user.deleteMany();
 
     const passwordHash = await bcrypt.hash("password", 10);
 
-    //  ADMIN USER
     const admin = await prisma.user.create({
         data: {
             email: "admin@test.com",
@@ -19,7 +18,6 @@ async function main() {
         }
     });
 
-    //  NORMAL USER
     const user = await prisma.user.create({
         data: {
             email: "test@test.com",
@@ -29,17 +27,27 @@ async function main() {
         }
     });
 
-    // POST BY ADMIN
+    const tag1 = await prisma.tag.create({
+        data: { name: "javascript" }
+    });
+
+    const tag2 = await prisma.tag.create({
+        data: { name: "prisma" }
+    });
+
     const post = await prisma.post.create({
         data: {
             title: "Admin Post",
             content: "This is an admin-created post.",
             published: true,
-            authorId: admin.id
+            imageUrl: "https://placehold.co/600x400",
+            authorId: admin.id,
+            tags: {
+                connect: [{ id: tag1.id }, { id: tag2.id }]
+            }
         }
     });
 
-    // COMMENT BY NORMAL USER
     const comment = await prisma.comment.create({
         data: {
             content: "I am a normal user comment",
@@ -48,16 +56,14 @@ async function main() {
         }
     });
 
-    console.log("Seed complete:");
     console.log({ admin, user, post, comment });
 }
 
 main()
-    .then(async () => {
-        await prisma.$disconnect();
-    })
+    .then(() => prisma.$disconnect())
     .catch(async (e) => {
         console.error(e);
         await prisma.$disconnect();
         process.exit(1);
-    });
+    }
+);
