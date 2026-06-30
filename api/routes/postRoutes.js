@@ -3,6 +3,7 @@ import { getPosts, getPostById, createPost, updatePost, deletePost } from "../co
 import { getComments, createComment, deleteComment } from "../controllers/commentController.js";
 import { verifyToken } from "../middleware/verifyToken.js";
 import { requireAdmin } from "../middleware/requireAdmin.js";
+import upload from "../middleware/upload.js";
 
 const postsRouter = express.Router();
 
@@ -13,10 +14,10 @@ postsRouter.get("/", getPosts);
 postsRouter.get("/:postId", getPostById);
 
 // Create post
-postsRouter.post("/", verifyToken, requireAdmin, createPost);
+postsRouter.post("/", verifyToken, requireAdmin, upload.single("image"), createPost);
 
 // Update post
-postsRouter.patch("/:postId", verifyToken, requireAdmin, updatePost);
+postsRouter.patch("/:postId", verifyToken, requireAdmin, upload.single("image"), updatePost);
 
 // Delete post
 postsRouter.delete("/:postId", verifyToken, requireAdmin, deletePost);

@@ -1,4 +1,4 @@
-import { updatePost, deletePost, getPosts } from '../../api/postService';
+import { updatePost } from '../../api/postService';
 import './Card.css'
 import { Link, useOutletContext } from 'react-router';
 
