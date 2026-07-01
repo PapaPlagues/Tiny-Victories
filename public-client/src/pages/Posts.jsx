@@ -1,9 +1,22 @@
 import { useOutletContext } from "react-router";
 import PostList from "../components/PostList";
 import '../styles/Posts.css';
+import '../styles/Tag.css'
+import { useState } from "react";
 
 const Posts = () => {
     const { backendData = [] } = useOutletContext();
+     const [activeTag, setActiveTag] = useState(null);
+
+     const allTags = [
+        ...new Set(
+            backendData.flatMap(post => 
+            (post.tags || []).map(t =>
+                typeof t === "string" ? t : t.name
+            )
+            )
+        )
+     ];
 
     return(
         <>
@@ -15,19 +28,32 @@ const Posts = () => {
                         A collection of projects, experiments, and things I'm figuring out.
                     </p> 
 
-                    <form action="">
-                        <label htmlFor="">Search </label>
-                        <input type="text" />
-                    </form>
+                    <div className="tag-bar">
+                        <span 
+                            className={`tag ${!activeTag ? "active" : ""}`}
+                            onClick={() => setActiveTag(null)}
+                        >
+                            All
+                        </span>
 
-                    {/* labels to click on? */}
+                        {allTags.map(tag => (
+                            <span
+                                key={tag}
+                                className={`tag ${activeTag === tag ? "active" : ""}`}
+                                onClick={() => setActiveTag(tag)}
+                            >
+                                {tag}
+                            </span>
+                        ))}
+                    </div>
+
                 </div>
 
                 
             </header>
 
             <section id='posts-body'>
-                <PostList posts={backendData}/>
+                <PostList posts={backendData} activeTag={activeTag} setActiveTag={setActiveTag}/>
             </section>
         </>
     )

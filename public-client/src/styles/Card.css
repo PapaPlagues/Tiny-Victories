@@ -39,3 +39,20 @@
     object-fit: cover;
 }
 
+.card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+}
+
+.tag {
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 999px;
+
+    background: var(--dark-secondary);
+    color: var(--dark-text);
+
+    opacity: 0.9;
+}
