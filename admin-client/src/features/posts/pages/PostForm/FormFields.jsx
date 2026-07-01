@@ -66,14 +66,18 @@ const FormFields = ({ form, setForm }) => {
                 <input
                     type="text"
                     id="tags"
+                    value={form.tagsInput ?? ""}
                     placeholder="React, JavaScript, Prisma..."
-                    onChange={(e) => updateField(
-                        "tags",
-                        e.target.value
-                         .split(",")
-                         .map(t => t.trim())
-                    )
-                }
+                    onChange={(e) => {
+                        const nextValue = e.target.value;
+                        const nextTags = nextValue
+                            .split(",")
+                            .map((tag) => tag.trim())
+                            .filter(Boolean);
+
+                        updateField("tagsInput", nextValue);
+                        updateField("tags", nextTags);
+                    }}
                 />
 
                 <small>

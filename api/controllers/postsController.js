@@ -6,9 +6,45 @@ const parseBoolean = (value) => {
     return false;
 };
 
+export const normalizeTags = (rawTags) => {
+    if (Array.isArray(rawTags)) {
+        return rawTags
+            .map((tag) => String(tag).trim())
+            .filter(Boolean);
+    }
+
+    if (typeof rawTags === "string") {
+        const trimmed = rawTags.trim();
+
+        if (!trimmed) return [];
+
+        try {
+            const parsed = JSON.parse(trimmed);
+            if (Array.isArray(parsed)) {
+                return parsed
+                    .map((tag) => String(tag).trim())
+                    .filter(Boolean);
+            }
+        } catch {
+            // fall back to comma-separated parsing
+        }
+
+        return trimmed
+            .split(",")
+            .map((tag) => tag.trim())
+            .filter(Boolean);
+    }
+
+    return [];
+};
+
 // Get all posts
 export const getPosts = async (req, res) => {
-    const posts = await prisma.post.findMany();
+    const posts = await prisma.post.findMany({
+        include: {
+            tags: true,
+        },
+    });
     res.json(posts);
 };
 
@@ -23,6 +59,7 @@ export const getPostById = async (req, res) => {
         include: {
             comments: true,
             author: true,
+            tags: true,
         }
     });
 
@@ -51,6 +88,8 @@ export const createPost = async (req, res) => {
             console.log("Local image saved at:", imageUrl);
         }
 
+        const normalizedTags = normalizeTags(tags);
+
         const post = await prisma.post.create({
             data: {
                 title,
@@ -58,7 +97,15 @@ export const createPost = async (req, res) => {
                 published: published === "true" || published === true,
                 imageUrl,
                 authorId: req.user.userId,
-                // add tags
+                tags: normalizedTags.length > 0 ? {
+                    connectOrCreate: normalizedTags.map((tagName) => ({
+                        where: { name: tagName },
+                        create: { name: tagName },
+                    })),
+                } : undefined,
+            },
+            include: {
+                tags: true,
             },
         });
 
@@ -96,9 +143,37 @@ export const updatePost = async (req, res) => {
         if (published !== undefined) updateData.published = parseBoolean(published);
         if (imageUrl) updateData.imageUrl = imageUrl;
 
+        const normalizedTags = normalizeTags(tags);
+
+        if (tags !== undefined) {
+            await prisma.post.update({
+                where: { id: postId },
+                data: {
+                    tags: {
+                        set: [],
+                    },
+                },
+            });
+        }
+
         const post = await prisma.post.update({
             where: { id: postId },
-            data: updateData,
+            data: {
+                ...updateData,
+                ...(tags !== undefined ? {
+                    tags: normalizedTags.length > 0 ? {
+                        connectOrCreate: normalizedTags.map((tagName) => ({
+                            where: { name: tagName },
+                            create: { name: tagName },
+                        })),
+                    } : {
+                        set: [],
+                    },
+                } : {}),
+            },
+            include: {
+                tags: true,
+            },
         });
 
         res.json(post);

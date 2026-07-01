@@ -1,5 +1,26 @@
 import { API_URL } from '../../../config/config';
 
+const normalizeTags = (tags) => {
+    if (!tags) return [];
+
+    if (Array.isArray(tags)) {
+        return tags
+            .map((tag) => (typeof tag === 'string' ? tag : tag?.name))
+            .filter(Boolean)
+            .map((tag) => String(tag).trim())
+            .filter(Boolean);
+    }
+
+    if (typeof tags === 'string') {
+        return tags
+            .split(',')
+            .map((tag) => tag.trim())
+            .filter(Boolean);
+    }
+
+    return [];
+};
+
 const handleResponse = async (res) => {
     const data = await res.json();
 
@@ -38,6 +59,7 @@ export const createPost = async ({
     image,
     tags,
 }) => {
+    const normalizedTags = normalizeTags(tags);
     const formData = new FormData();
 
     formData.append("title", title);
@@ -48,7 +70,7 @@ export const createPost = async ({
         console.log("Appending image file:", image);
         formData.append("image", image);
     }
-    if (tags) formData.append("tags", JSON.stringify(tags));
+    if (normalizedTags.length > 0) formData.append("tags", JSON.stringify(normalizedTags));
 
     const res = await fetch(`${API_URL}/posts`, {
         method: "POST",
@@ -69,7 +91,7 @@ export const updatePost = async (id, { token, ...payload }) => {
         if (value === undefined || value === null) return;
 
         if (key === "tags") {
-            formData.append("tags", JSON.stringify(value));
+            formData.append("tags", JSON.stringify(normalizeTags(value)));
         } else {
             if (key === "image" && value) {
                 console.log("Appending image file to update:", value);

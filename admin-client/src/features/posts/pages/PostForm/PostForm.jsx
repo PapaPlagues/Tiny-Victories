@@ -18,6 +18,7 @@ const initialFormState = {
     imageUrl: null,
     imagePreview: null,
     tags: [],
+    tagsInput: "",
     published: false,
 };
 
@@ -46,7 +47,13 @@ const PostForm = ({ mode }) => {
             image: null,
             imageUrl: data.imageUrl || null,
             imagePreview: null,
-            tags: data.tags || [],
+            tags: (data.tags || [])
+                .map((tag) => (typeof tag === "string" ? tag : tag?.name))
+                .filter(Boolean),
+            tagsInput: (data.tags || [])
+                .map((tag) => (typeof tag === "string" ? tag : tag?.name))
+                .filter(Boolean)
+                .join(", "),
             published: data.published || false,
         });
     };
