@@ -1,6 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { createBrowserRouter, RouterProvider } from 'react-router';
+import { createBrowserRouter, RouterProvider, Navigate } from 'react-router';
 import './main.css'
 import App from './app/App.jsx'
 import AdminPosts from './features/posts/pages/AdminPosts/AdminPosts.jsx';
@@ -17,6 +17,7 @@ const router = createBrowserRouter([
     element: <App />,
     errorElement: <ErrorPage />,
     children: [
+      {index: true, element: <Navigate to="/login" replace />},
       {path: "login", element: <Login />},
 
 

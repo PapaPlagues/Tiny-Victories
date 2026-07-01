@@ -3,6 +3,10 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
 export const loginAuth = async (req, res) => {
+
+    
+
+
     try {
         const { email, password } = req.body;
 
