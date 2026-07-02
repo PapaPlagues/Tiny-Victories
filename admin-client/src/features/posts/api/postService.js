@@ -122,3 +122,15 @@ export const deletePost = async (id, { token }) => {
 
     return handleResponse(res);
 };
+
+// DELETE comment
+export const deleteComment = async(id, commentId, token) => {
+    const res = await fetch(`${API_URL}/posts/${id}/comments/${commentId}`, {
+        method: "DELETE",
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+
+    return handleResponse(res);
+}

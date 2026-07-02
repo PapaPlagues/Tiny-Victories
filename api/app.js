@@ -5,13 +5,34 @@ import postsRouter from "./routes/postRoutes.js";
 import authRouter from "./routes/authRoutes.js";
 import multer from "multer";
 import { v2 as cloudinary } from "cloudinary";
+import helmet from "helmet";
+
 
 const app = express();
 
 // Middleware
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://localhost:5174", 
+  "http://localhost:3000",
+]
+app.use(cors({
+  origin: function (origin, callback) {
+    // allow tools like Postman
+    if (!origin) return callback(null, true);
 
-// add more to cors later for security 
-app.use(cors());
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+
+    return callback(new Error("Not allowed by CORS"));
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PATCH", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+}));
+
+app.use(helmet());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

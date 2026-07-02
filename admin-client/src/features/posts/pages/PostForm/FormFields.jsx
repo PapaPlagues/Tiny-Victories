@@ -1,3 +1,5 @@
+import Comments from "../../components/Comments/Comments";
+
 const FormFields = ({ form, setForm }) => {
 
     const updateField = (key, value) => {
@@ -111,6 +113,9 @@ const FormFields = ({ form, setForm }) => {
                     Publish immediately
                 </label>
             </div>
+
+            {/* Comments */}
+           <Comments form={form} setForm={setForm} />
         </>
     );
 };

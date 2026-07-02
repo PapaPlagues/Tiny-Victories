@@ -1,12 +1,21 @@
 import { prisma } from "../lib/prisma.js";
+import sanitizeHtml from "sanitize-html";
 
 // Get comments for a post
 export const getComments = async (req, res) => {
-    const { postId } = req.params;
-  const comments = await prisma.comment.findMany({
-    where: { postId }
-  });
-  res.json(comments);
+    try {
+        const { postId } = req.params;
+
+        const comments = await prisma.comment.findMany({
+            where: { postId },
+            orderBy: { createdAt: "desc" }
+        });
+
+        res.json(comments);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Failed to fetch comments" });
+    }
 };
 
 // Create comment for a post
@@ -15,36 +24,68 @@ export const createComment = async (req, res) => {
         const { postId } = req.params;
         const { content, username } = req.body;
 
+        if (!content || !username) {
+            return res.status(400).json({ error: "Missing fields" });
+        };
+
+        if (typeof content !== "string" || typeof username !== "string") {
+            return res.status(400).json({ error: "Invalid input type" });
+        };
+
+        if (content.length > 500) {
+            return res.status(400).json({ error: "Comment too long (max 500)"});
+        };
+
+        if (username.length > 30) {
+            return res.status(400).json({error: "Username too long (max 30)"});
+        };
+
+        const cleanContent = sanitizeHtml(content, {
+            allowedTags: [],
+            allowedAttributes: {}
+        }).trim();
+
+        const cleanUsername = sanitizeHtml(username, {
+            allowedTags: [],
+            allowedAttributes: {}
+        }).trim();
+
+        if (!cleanContent || !cleanUsername) {
+            return res.status(400).json({ error: "Invalid content after cleaning" });
+        }
+
         const comment = await prisma.comment.create({
             data: {
-                content,
-                username,
-                postId
+                content: cleanContent,
+                username: cleanUsername,
+                postId,
             }
         });
 
         res.status(201).json(comment);
     } catch (err) {
-        res.status(500).json({ error: "Something went wrong" });
+       return res.status(500).json({ error: "Something went wrong" });
     };
    
 };
 
 // Delete comment
 export const deleteComment = async (req, res) => {
-    try { 
-        const { commentId } = req.params; 
+    try {
+        const { commentId } = req.params;
 
-        const comment = await prisma.comment.delete({
+        await prisma.comment.delete({
             where: { id: commentId }
         });
 
-        if (!comment) {
+        res.json({ message: "Comment deleted" });
+
+    } catch (err) {
+        if (err.code === "P2025") {
             return res.status(404).json({ error: "Comment not found" });
         }
 
-        res.json(comment);
-    } catch (err) {
+        console.error(err);
         res.status(500).json({ error: "Something went wrong" });
     }
 };

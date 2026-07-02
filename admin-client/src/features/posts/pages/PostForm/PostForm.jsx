@@ -20,6 +20,7 @@ const initialFormState = {
     tags: [],
     tagsInput: "",
     published: false,
+    comments: [],
 };
 
 const PostForm = ({ mode }) => {
@@ -55,8 +56,10 @@ const PostForm = ({ mode }) => {
                 .filter(Boolean)
                 .join(", "),
             published: data.published || false,
+            comments: data.comments || [],
         });
     };
+    
 
     loadPost();
 }, [postId]);
