@@ -69,9 +69,5 @@ app.listen(PORT, (err) => {
         console.error("Server error", err);
     }
 
-    console.log("CLOUD NAME:", process.env.CLOUD_NAME);
-    console.log("API KEY EXISTS:", !!process.env.CLOUD_API_KEY);
-    console.log("SECRET EXISTS:", !!process.env.CLOUD_API_SECRET);
-
     console.log(`Server running on PORT ${PORT}`);
 });

@@ -58,7 +58,13 @@ export const getPostById = async (req, res) => {
         },
         include: {
             comments: true,
-            author: true,
+            author: {
+                select: {
+                    id: true,
+                    username: true,
+                    displayName: true,
+                },
+            },
             tags: true,
         }
     });
