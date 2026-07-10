@@ -62,7 +62,6 @@ export const getPostById = async (req, res) => {
                 select: {
                     id: true,
                     username: true,
-                    displayName: true,
                 },
             },
             tags: true,

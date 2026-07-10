@@ -3,7 +3,7 @@ import { getPosts, getPostById, createPost, updatePost, deletePost } from "../co
 import { getComments, createComment, deleteComment } from "../controllers/commentController.js";
 import { verifyToken } from "../middleware/verifyToken.js";
 import { requireAdmin } from "../middleware/requireAdmin.js";
-import upload from "../middleware/upload.js";
+import upload, { processImage } from "../middleware/upload.js";
 import rateLimit from "express-rate-limit";
 
 const postsRouter = express.Router();
@@ -15,10 +15,10 @@ postsRouter.get("/", getPosts);
 postsRouter.get("/:postId", getPostById);
 
 // Create post
-postsRouter.post("/", verifyToken, requireAdmin, upload.single("image"), createPost);
+postsRouter.post("/", verifyToken, requireAdmin, upload.single("image"), processImage, createPost);
 
 // Update post
-postsRouter.patch("/:postId", verifyToken, requireAdmin, upload.single("image"), updatePost);
+postsRouter.patch("/:postId", verifyToken, requireAdmin, upload.single("image"), processImage, updatePost);
 
 // Delete post
 postsRouter.delete("/:postId", verifyToken, requireAdmin, deletePost);

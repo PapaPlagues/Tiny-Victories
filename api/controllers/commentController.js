@@ -22,14 +22,17 @@ export const getComments = async (req, res) => {
 export const createComment = async (req, res) => {
     try {
         const { postId } = req.params;
-        const { content, username } = req.body;
-
-        if (!content || !username) {
-            return res.status(400).json({ error: "Missing fields" });
-        };
+        let{ content, username } = req.body;
 
         if (typeof content !== "string" || typeof username !== "string") {
             return res.status(400).json({ error: "Invalid input type" });
+        };
+
+        content = content.trim();
+        username = username.trim();
+
+        if (!content || !username) {
+            return res.status(400).json({ error: "Missing fields" });
         };
 
         if (content.length > 500) {
@@ -50,8 +53,8 @@ export const createComment = async (req, res) => {
             allowedAttributes: {}
         }).trim();
 
-        if (!cleanContent || !cleanUsername) {
-            return res.status(400).json({ error: "Invalid content after cleaning" });
+        if (cleanContent !== content || cleanUsername !== username) {
+            return res.status(400).json({ error: "HTML is not allowed in comments or usernames."});
         }
 
         const comment = await prisma.comment.create({

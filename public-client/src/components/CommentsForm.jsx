@@ -5,6 +5,8 @@ import { useParams, useOutletContext } from "react-router";
 const CommentsForm = ({ setComments }) => {
     const [username, setUsername] = useState("");
     const [content, setContent] = useState("");
+    const [error, setError] = useState("");
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const { postId } = useParams();
     const { API_URL } = useOutletContext();
@@ -12,6 +14,9 @@ const CommentsForm = ({ setComments }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        setError("");
+        setIsSubmitting(true);
 
         const commentSetting = {
             method: 'POST',
@@ -22,19 +27,22 @@ const CommentsForm = ({ setComments }) => {
         try {
             const res = await fetch(`${API_URL}/posts/${postId}/comments`, commentSetting);
 
-            const newComment = await res.json();
+            const data = await res.json();
 
             if (!res.ok) {
-                console.log("Failed to post comment");
+                setError(data.error || "Failed to post comment.");
                 return;
             }
          
-            setComments((prev) => [...prev, newComment]);
+            setComments((prev) => [...prev, data]);
 
             setUsername("");
             setContent("");
         } catch(err) {
             console.error(err);
+            setError("Unable to connect to the server.");
+        } finally {
+            setIsSubmitting(false);
         }
     };
    
@@ -48,8 +56,13 @@ const CommentsForm = ({ setComments }) => {
                         type="text" 
                         id="username"
                         value={username}
-                        onChange={(e) => setUsername(e.target.value)} 
-                        placeholder="Your name" 
+                        onChange={(e) => {
+                            setUsername(e.target.value);
+                            setError("");
+                            }
+                        } 
+                        placeholder="Your name"
+                        maxLength={30} 
                     />
                 </div>
 
@@ -58,14 +71,22 @@ const CommentsForm = ({ setComments }) => {
                     <textarea
                         id="comment"
                         value={content}
-                        onChange={(e) => setContent(e.target.value)} 
+                        onChange={(e) => {
+                            setContent(e.target.value);
+                            setError("");
+                            }
+                        } 
                         rows="5" 
                         placeholder="Share your thoughts..."
+                        maxLength={500}
                     />
+                    <p>{content.length}/500</p>
                 </div>
+
+                {error && <p className='error-message'>{error}</p>}
                
-               <button type="submit">
-                Post Comment
+               <button type="submit" disabled={isSubmitting}>
+                    {isSubmitting ? "Posting..." : "Post Comment"}
                </button>
             </form>
     )
