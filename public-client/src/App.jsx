@@ -1,3 +1,4 @@
+import './styles/App.css';
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import { Outlet } from "react-router";
@@ -38,20 +39,22 @@ function App() {
     loadInitialPosts();
   }, [fetchPosts]);
 
-  return (
-    <>
-      <Header />
+return (
+  <div className="app-layout">
+    <Header />
 
-      {loading && <p>Loading posts...</p>}
-      {error && <p style={{ color: "red" }}>{error}</p>}
+    <main className="content">
+        {loading && <p>Loading posts...</p>}
+        {error && <p style={{ color: "red" }}>{error}</p>}
 
-      {!loading && !error && (
-        <Outlet context={{ backendData, API_URL, refreshPosts: fetchPosts }} />
-      )}
+        {!loading && !error && (
+          <Outlet context={{ backendData, API_URL, refreshPosts: fetchPosts }} />
+        )}
+    </main>
 
-      <Footer />
-    </>
-  );
+    <Footer />
+  </div>
+);
 }
 
 export default App;
