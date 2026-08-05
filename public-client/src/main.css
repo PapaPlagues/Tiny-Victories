@@ -18,6 +18,14 @@ html, body, #root {
   height: 100%;
 }
 
+/* Make #root a column flex container so the app can stretch to full height
+   and allow the footer to remain at the bottom when content is short. */
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -30,7 +38,8 @@ body {
 
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  min-height: 100dvh; /* Uses dynamic viewport height to fix mobile browser layout bugs */
+  margin: 0;
 }
 
 a { 
@@ -38,3 +47,4 @@ a {
     color: var(--dark-text);
     font-weight: 500;
 }
+
