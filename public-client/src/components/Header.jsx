@@ -4,7 +4,9 @@ function Header() {
 
     return(
         <header className="site-header">
-            <h1 className="logo">Tiny Victories</h1>
+            <a href="/" className="logo">
+                Tiny <span>Victories</span>
+            </a>
 
             <nav>
                 <ul className="nav-links">

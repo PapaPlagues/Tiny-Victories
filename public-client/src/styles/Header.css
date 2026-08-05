@@ -3,24 +3,82 @@
     justify-content: space-between;
     align-items: center;
 
-    padding: 1rem 2rem;
+    padding: 1.5rem 3rem;
     width:100%;
+
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+
+    background: rgba(20,17,24,0.75);
 }
 
 .logo {
     margin: 0;
-    font-size: 1.3rem;
+
+    font-size: 1.6rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+
+    color: var(--dark-text);
+
+    transition: color .2s ease;
+}
+
+.logo span {
+    color: var(--dark-accent);
+}
+
+.logo:hover {
+    color: var(--dark-accent);
 }
 
 .nav-links {
     display: flex;
-    gap: 1.5rem;
+    gap: 2rem;
+
     list-style: none;
+
     margin: 0;
     padding: 0;
 }
 
-.nav-links a:hover {
-    color: var(--dark-accent);
+.nav-links a {
+    position: relative;
+
+    font-size: 1rem;
+    font-weight: 600;
+
+    color: rgba(237,235,240,0.75);
+
+    transition: color .2s ease;
 }
+
+.nav-links a:hover  {
+    color: var(--dark-text);
+}
+
+/* underline animation */
+.nav-links a::after {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    bottom: -6px;
+
+    width: 100%;
+    height: 2px;
+
+    background: var(--dark-accent);
+
+    transform: scaleX(0);
+    transform-origin: left;
+
+    transition: transform .2s ease;
+}
+
+
+.nav-links a:hover::after {
+    transform: scaleX(1);
+}
+
 

@@ -26,11 +26,11 @@ const Homepage = () => {
                             It's a mix of code, art, ideas, and various other projects.
                         </p>
                         <div>
-                            <a href="/posts">
-                                <button className="btn" id="main-btn">Posts</button>
+                            <a href="/posts" className="btn" id="main-btn">
+                                Posts
                             </a>
-                            <a href="https://github.com/PapaPlagues">
-                                <button className="btn" id="secondary-btn">Github</button>
+                            <a href="https://github.com/PapaPlagues" className="btn" id="secondary-btn">
+                               Github
                             </a>
                         </div>
                     </div>
@@ -40,7 +40,7 @@ const Homepage = () => {
             </header>
 
             <section id="home-body">
-                <div>
+                <div id="home-body-title">
                     <h2>Latest Posts</h2>
                 </div>
                 
@@ -50,7 +50,7 @@ const Homepage = () => {
                 
                              
                 <div>
-                    <p><a href="/posts">View All Posts...</a></p>
+                    <p><a href="/posts" className="view-all">View All Posts...</a></p>
                 </div>
                 
             </section>
