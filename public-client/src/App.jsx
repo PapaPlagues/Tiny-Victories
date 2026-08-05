@@ -1,7 +1,7 @@
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import { Outlet } from "react-router";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 function App() {
   const [backendData, setBackendData] = useState([]);
@@ -10,29 +10,33 @@ function App() {
 
   const API_URL = import.meta.env.VITE_API_URL;
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        setLoading(true);
-        setError(null);
+  const fetchPosts = useCallback(async () => {
+    try {
+      setLoading(true);
+      setError(null);
 
-        const response = await fetch(API_URL + "/posts");
+      const response = await fetch(API_URL + "/posts");
 
-        if (!response.ok) {
-          throw new Error(`HTTP error: ${response.status}`);
-        }
-
-        const data = await response.json();
-        setBackendData(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
+      if (!response.ok) {
+        throw new Error(`HTTP error: ${response.status}`);
       }
+
+      const data = await response.json();
+      setBackendData(data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  }, [API_URL]);
+
+  useEffect(() => {
+    const loadInitialPosts = async () => {
+      await fetchPosts();
     };
 
-    fetchPosts();
-  }, [API_URL]);
+    loadInitialPosts();
+  }, [fetchPosts]);
 
   return (
     <>
@@ -42,7 +46,7 @@ function App() {
       {error && <p style={{ color: "red" }}>{error}</p>}
 
       {!loading && !error && (
-        <Outlet context={{ backendData, API_URL }} />
+        <Outlet context={{ backendData, API_URL, refreshPosts: fetchPosts }} />
       )}
 
       <Footer />

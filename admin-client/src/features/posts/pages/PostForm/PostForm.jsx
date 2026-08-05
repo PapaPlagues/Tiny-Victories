@@ -34,35 +34,34 @@ const PostForm = ({ mode }) => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-    if (!postId) {
-        setForm(initialFormState);
-        return;
-    }
+        const initialize = async () => {
+            if (!postId) {
+                setForm(initialFormState);
+                return;
+            }
 
-    const loadPost = async () => {
-        const data = await getPost(postId);
+            const data = await getPost(postId, { token });
 
-        setForm({
-            title: data.title || "",
-            content: data.content || "",
-            image: null,
-            imageUrl: data.imageUrl || null,
-            imagePreview: null,
-            tags: (data.tags || [])
-                .map((tag) => (typeof tag === "string" ? tag : tag?.name))
-                .filter(Boolean),
-            tagsInput: (data.tags || [])
-                .map((tag) => (typeof tag === "string" ? tag : tag?.name))
-                .filter(Boolean)
-                .join(", "),
-            published: data.published || false,
-            comments: data.comments || [],
-        });
-    };
-    
+            setForm({
+                title: data.title || "",
+                content: data.content || "",
+                image: null,
+                imageUrl: data.imageUrl || null,
+                imagePreview: null,
+                tags: (data.tags || [])
+                    .map((tag) => (typeof tag === "string" ? tag : tag?.name))
+                    .filter(Boolean),
+                tagsInput: (data.tags || [])
+                    .map((tag) => (typeof tag === "string" ? tag : tag?.name))
+                    .filter(Boolean)
+                    .join(", "),
+                published: data.published || false,
+                comments: data.comments || [],
+            });
+        };
 
-    loadPost();
-}, [postId]);
+        initialize();
+    }, [postId, token]);
 
     const handleSubmit = async (e) => {
     e.preventDefault();

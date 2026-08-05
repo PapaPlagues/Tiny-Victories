@@ -21,6 +21,9 @@ const normalizeTags = (tags) => {
     return [];
 };
 
+
+const authHeaders = (token) => token ? { Authorization: `Bearer ${token}` } : {};
+
 const handleResponse = async (res) => {
     const data = await res.json();
 
@@ -36,17 +39,17 @@ const handleResponse = async (res) => {
 // GET all posts
 export const getPosts = async ({ token }) => {
     const res = await fetch(`${API_URL}/posts`, {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
+        headers: authHeaders(token),
     });
 
     return handleResponse(res);
 };
 
 // GET single post
-export const getPost = async (id) => {
-    const res = await fetch(`${API_URL}/posts/${id}`);
+export const getPost = async (id, { token } = {}) => {
+    const res = await fetch(`${API_URL}/posts/${id}`, {
+        headers: authHeaders(token),
+    });
     return handleResponse(res);
 };
 
@@ -74,9 +77,7 @@ export const createPost = async ({
 
     const res = await fetch(`${API_URL}/posts`, {
         method: "POST",
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
+        headers: authHeaders(token),
         body: formData,
     });
 
@@ -102,9 +103,7 @@ export const updatePost = async (id, { token, ...payload }) => {
 
     const res = await fetch(`${API_URL}/posts/${id}`, {
         method: "PATCH",
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
+        headers: authHeaders(token),
         body: formData,
     });
 
@@ -115,9 +114,7 @@ export const updatePost = async (id, { token, ...payload }) => {
 export const deletePost = async (id, { token }) => {
     const res = await fetch(`${API_URL}/posts/${id}`, {
         method: "DELETE",
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
+        headers: authHeaders(token),
     });
 
     return handleResponse(res);
@@ -127,9 +124,7 @@ export const deletePost = async (id, { token }) => {
 export const deleteComment = async(id, commentId, token) => {
     const res = await fetch(`${API_URL}/posts/${id}/comments/${commentId}`, {
         method: "DELETE",
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
+        headers: authHeaders(token),
     });
 
     return handleResponse(res);

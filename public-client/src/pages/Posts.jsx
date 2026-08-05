@@ -1,24 +1,28 @@
+import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router";
 import PostList from "../components/PostList";
 import '../styles/Posts.css';
-import '../styles/Tag.css'
-import { useState } from "react";
+import '../styles/Tag.css';
 
 const Posts = () => {
-    const { backendData = [] } = useOutletContext();
-     const [activeTag, setActiveTag] = useState(null);
+    const { backendData = [], refreshPosts } = useOutletContext();
+    const [activeTag, setActiveTag] = useState(null);
 
-     const allTags = [
+    useEffect(() => {
+        refreshPosts?.();
+    }, [refreshPosts]);
+
+    const allTags = [
         ...new Set(
-            backendData.flatMap(post => 
-            (post.tags || []).map(t =>
-                typeof t === "string" ? t : t.name
-            )
+            backendData.flatMap(post =>
+                (post.tags || []).map(t =>
+                    typeof t === "string" ? t : t.name
+                )
             )
         )
-     ];
+    ];
 
-    return(
+    return (
         <>
             <header className="posts-header">
                 <div className="posts-header-inner">
@@ -26,10 +30,10 @@ const Posts = () => {
 
                     <p className="posts-subtitle">
                         A collection of projects, experiments, and things I'm figuring out.
-                    </p> 
+                    </p>
 
                     <div className="tag-bar">
-                        <span 
+                        <span
                             className={`tag ${!activeTag ? "active" : ""}`}
                             onClick={() => setActiveTag(null)}
                         >
@@ -48,15 +52,13 @@ const Posts = () => {
                     </div>
 
                 </div>
-
-                
             </header>
 
             <section id='posts-body'>
-                <PostList posts={backendData} activeTag={activeTag} setActiveTag={setActiveTag}/>
+                <PostList posts={backendData} activeTag={activeTag} setActiveTag={setActiveTag} />
             </section>
         </>
-    )
+    );
 };
 
 export default Posts;

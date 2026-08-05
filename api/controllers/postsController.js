@@ -1,4 +1,5 @@
 import { prisma } from "../lib/prisma.js";
+import jwt from "jsonwebtoken";
 
 const parseBoolean = (value) => {
     if (typeof value === "boolean") return value;
@@ -38,24 +39,48 @@ export const normalizeTags = (rawTags) => {
     return [];
 };
 
+const getRequestUser = (req) => {
+    const authHeader = req.headers.authorization;
+    if (!authHeader) return null;
+
+    const token = authHeader.split(" ")[1];
+    if (!token) return null;
+
+    try {
+        return jwt.verify(token, process.env.JWT_SECRET);
+    } catch {
+        return null;
+    }
+};
+
 // Get all posts
 export const getPosts = async (req, res) => {
+    const requestUser = getRequestUser(req);
+    const isAdmin = requestUser?.role === "ADMIN";
+
     const posts = await prisma.post.findMany({
+        where: isAdmin ? {} : { published: true },
+        orderBy: {
+            createdAt: "desc",
+        },
         include: {
             tags: true,
         },
     });
+
     res.json(posts);
 };
 
 // Get one post
 export const getPostById = async (req, res) => {
     const { postId } = req.params;
+    const requestUser = getRequestUser(req);
+    const isAdmin = requestUser?.role === "ADMIN";
 
-    const post = await prisma.post.findUnique({
-        where: {
-            id: postId
-        },
+    const post = await prisma.post.findFirst({
+        where: isAdmin
+            ? { id: postId }
+            : { id: postId, published: true },
         include: {
             comments: true,
             author: {
@@ -69,7 +94,7 @@ export const getPostById = async (req, res) => {
     });
 
     if (!post) {
-        return res.status(404).json({ error: "Post not found "});
+        return res.status(404).json({ error: "Post not found" });
     }
 
     res.json(post);

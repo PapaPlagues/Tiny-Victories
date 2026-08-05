@@ -12,15 +12,12 @@ const ProtectedRoute = () => {
 
     try {
         const decoded = jwtDecode(token);
-
         const now = Date.now();
-
         const isExpired = decoded.exp * 1000 < now;
 
-        if (isExpired) {
+        if (isExpired || decoded.role !== "ADMIN") {
             isValid = false;
         }
-
     } catch (err) {
         isValid = false;
         console.error(err);
@@ -28,7 +25,7 @@ const ProtectedRoute = () => {
 
     if (!isValid) {
         localStorage.removeItem("token");
-        return <Navigate to="/login/" replace />
+        return <Navigate to="/login/" replace />;
     }
 
     return <Outlet />;
