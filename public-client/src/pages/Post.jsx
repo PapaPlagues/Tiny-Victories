@@ -27,25 +27,36 @@ const Post = () => {
 
     return(
         <>
-            {post.imageUrl && (
-                <img
-                    src={post.imageUrl}
-                    alt={post.title}
-                    className="post-cover"
-                    style={{ width: "100%", maxHeight: "400px", objectFit: "cover", marginBottom: "1rem" }}
-                />
-            )}
             <header className="post-header">
-                <div className="post-header-inner">
-                    <h1>{post.title}</h1>
-                    {/* make authorid show author name later */}
-                    <p>Posted by {post.author.username}</p>
 
-                    <p>Created at {" "}
-                        {createdDate.toLocaleDateString("en-US", {
-                            year: "numeric", month: "long", day: "numeric",
-                        })}
-                    </p>
+                <div className="post-header-inner">
+
+                    {post.imageUrl && (
+                        <img
+                            src={post.imageUrl}
+                            alt={post.title}
+                            className="post-cover"
+                            style={{ width: "100%", maxHeight: "400px", objectFit: "cover", marginBottom: "1rem" }}
+                        />
+                    )}
+
+
+                    <h1>{post.title}</h1>
+
+                    <div className="post-meta">
+                        <span>
+                            By {post.author.username}
+                        </span>
+
+                        <span>
+                            {createdDate.toLocaleDateString("en-US", {
+                                year:"numeric",
+                                month:"long",
+                                day:"numeric"
+                            })}
+                        </span>
+                    </div>
+
                     
                     <p>Updated {" "}
                         {updatedDate.toLocaleTimeString("en-US", {
@@ -53,7 +64,7 @@ const Post = () => {
                         })}
                     </p>
 
-                    <div>
+                    <div className="post-tags">
                             {tagList.map((tag, index) => (
                                 <Tag key={index}>
                                     {typeof tag === "string" ? tag : tag.name}

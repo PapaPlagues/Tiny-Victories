@@ -1,33 +1,75 @@
 .posts-header {
     width: 100%;
-    padding: 5rem 2rem 2rem 2rem;
+
+    padding: 4rem 2rem 2rem;
+
     display: flex;
     justify-content: center;
 
-    background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.02));
+    background: linear-gradient(
+        to bottom,
+        transparent,
+        rgba(255,255,255,0.02)
+    );
 }
+
 
 .posts-header-inner {
     width: 100%;
     max-width: 1200px;
 }
 
+
 .posts-header h1 {
-    font-size: 2.8rem;
-    margin-bottom: 0.8rem;
+    font-size: 3rem;
+    line-height: 1.1;
+
+    margin: 0 0 1rem;
+
+    letter-spacing: -1px;
 }
 
+
 .posts-subtitle {
-    max-width: 700px;
-    opacity: 0.75;
-    font-size: 1.05rem;
-    line-height: 1.6;
+    max-width: 650px;
+
+    margin: 0;
+
+    font-size: 1.15rem;
+
+    color: rgba(237,235,240,0.75);
 }
 
 /* main container */
 #posts-body {
     width: 100%;
     max-width: 1200px;
-    margin: 0 auto;
+
+    margin: 1rem auto 0;
+
     padding: 2rem;
+}
+
+.posts-section-title {
+    font-size: 1.8rem;
+
+    margin-bottom: 2rem;
+
+    letter-spacing: -.5px;
+}
+
+
+.posts-section-title::after {
+    content:"";
+
+    display:block;
+
+    width:50px;
+    height:3px;
+
+    margin-top:.75rem;
+
+    background:var(--dark-accent);
+
+    border-radius:10px;
 }

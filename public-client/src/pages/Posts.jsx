@@ -55,6 +55,10 @@ const Posts = () => {
             </header>
 
             <section id='posts-body'>
+                <h2 className="posts-section-title">
+                    Projects & Posts
+                </h2>
+
                 <PostList posts={backendData} activeTag={activeTag} setActiveTag={setActiveTag} />
             </section>
         </>

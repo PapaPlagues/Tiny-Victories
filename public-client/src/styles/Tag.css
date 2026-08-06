@@ -1,47 +1,50 @@
-.tag {
-    display: inline-flex;
-    align-items: center;
+.tag-bar {
+    display: flex;
 
-    font-size: 12px;
-    padding: 4px 10px;
+    flex-wrap: wrap;
+
+    gap: .75rem;
+
+    margin-top: 2rem;
+}
+
+
+.tag {
+    padding: .5rem 1rem;
 
     border-radius: 999px;
 
-    background: var(--dark-secondary);
-    color: var(--dark-text);
-
-    opacity: 0.85;
     cursor: pointer;
 
-    transition: all 0.15s ease-in-out;
+    font-size: .9rem;
+    font-weight: 600;
+
+    color: rgba(237,235,240,.75);
+
+    background: rgba(255,255,255,.04);
+
+    border: 1px solid rgba(255,255,255,.1);
+
+    transition:
+        background .2s ease,
+        color .2s ease,
+        transform .2s ease;
 }
+
 
 .tag:hover {
-    transform: translateY(-1px);
-    opacity: 1;
-    background: var(--dark-accent);
+    transform: translateY(-2px);
+
+    color: var(--dark-text);
+
+    border-color: var(--dark-accent);
 }
 
-.card-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-
-    margin-top: 10px;
-}
-
-.tag-bar {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-
-    margin: 1rem 0 2rem 0;
-    padding: 0.5rem 0;
-}
 
 .tag.active {
     background: var(--dark-accent);
-    opacity: 1;
 
-    box-shadow: 0 0 0 1px rgba(255,255,255,0.1);
+    color: var(--dark-text);
+
+    border-color: transparent;
 }
