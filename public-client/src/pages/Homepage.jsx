@@ -5,12 +5,8 @@ import heroImage from "../assets/pexels-timmossholder-3260289.jpg";
 import { useOutletContext } from "react-router";
 
 const Homepage = () => {
-    const { backendData = [], refreshPosts } = useOutletContext();
 
-    useEffect(() => {
-        refreshPosts?.();
-    }, [refreshPosts]);
-
+    const { backendData = [] } = useOutletContext();
     const previewPosts = backendData.slice(0, 3);
 
     return (
