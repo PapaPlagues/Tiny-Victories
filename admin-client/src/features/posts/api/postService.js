@@ -70,7 +70,6 @@ export const createPost = async ({
     formData.append("published", published);
 
     if (image) {
-        console.log("Appending image file:", image);
         formData.append("image", image);
     }
     if (normalizedTags.length > 0) formData.append("tags", JSON.stringify(normalizedTags));
@@ -94,9 +93,6 @@ export const updatePost = async (id, { token, ...payload }) => {
         if (key === "tags") {
             formData.append("tags", JSON.stringify(normalizeTags(value)));
         } else {
-            if (key === "image" && value) {
-                console.log("Appending image file to update:", value);
-            }
             formData.append(key, value);
         }
     });

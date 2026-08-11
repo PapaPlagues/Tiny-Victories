@@ -8,7 +8,6 @@ const Footer = () => {
 
                 <div className="footer-links">
                     <a href="/posts">Posts</a>
-                    <a href="/about">About</a>
                     <a href="https://github.com/PapaPlagues" target="_blank" rel="noreferrer">
                         Github
                     </a>

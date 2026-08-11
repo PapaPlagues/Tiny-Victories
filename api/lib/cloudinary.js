@@ -16,7 +16,6 @@ let envLoaded = false;
 for (const envPath of envPaths) {
     const result = dotenv.config({ path: envPath });
     if (!result.error) {
-        console.log("Loaded env from", envPath);
         envLoaded = true;
         break;
     }
@@ -25,13 +24,6 @@ for (const envPath of envPaths) {
 if (!envLoaded) {
     console.warn("Failed to load .env for Cloudinary in api/lib/cloudinary.js");
 }
-
-console.log("Cloudinary env loaded:", {
-    CLOUDINARY_URL: Boolean(process.env.CLOUDINARY_URL),
-    CLOUD_NAME: Boolean(process.env.CLOUD_NAME),
-    CLOUD_API_KEY: Boolean(process.env.CLOUD_API_KEY),
-    CLOUD_API_SECRET: Boolean(process.env.CLOUD_API_SECRET),
-});
 
 const cloudinaryConfig = process.env.CLOUDINARY_URL
     ? { cloudinary_url: process.env.CLOUDINARY_URL, secure: true }

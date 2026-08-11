@@ -32,7 +32,10 @@ app.use(cors({
   allowedHeaders: ["Content-Type", "Authorization"],
 }));
 
-app.use(helmet());
+app.use(helmet({
+    // Allow resources like images to be fetched from other origins (e.g., the public frontend)
+    crossOriginResourcePolicy: { policy: "cross-origin" },
+}));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -41,6 +44,9 @@ app.use(
     "/uploads",
     express.static("uploads", {
         setHeaders(res) {
+            // Allow images to be requested from other origins (e.g. public frontend)
+            // This permits the <img src="http://.../uploads/..."> requests to succeed
+            res.setHeader("Access-Control-Allow-Origin", "*");
             res.setHeader(
                 "X-Content-Type-Options",
                 "nosniff"
@@ -52,11 +58,6 @@ app.use(
 // Routes
 app.use("/posts", postsRouter);
 app.use("/auth", authRouter);
-
-app.get("/test-cloudinary", async (req, res) => {
-    const result = await cloudinary.api.ping();
-    res.json(result);
-});
 
 // Global error handler
 app.use((err, req, res, next) => {
@@ -81,3 +82,5 @@ app.listen(PORT, (err) => {
 
     console.log(`Server running on PORT ${PORT}`);
 });
+
+

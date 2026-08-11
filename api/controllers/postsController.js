@@ -112,10 +112,8 @@ export const createPost = async (req, res) => {
         let imageUrl = null;
 
         if (req.file) {
-            console.log("Processing local image upload:", req.file.originalname, req.file.size, req.file.filename);
             const origin = `${req.protocol}://${req.get("host")}`;
             imageUrl = `${origin}/uploads/${req.file.filename}`;
-            console.log("Local image saved at:", imageUrl);
         }
 
         const normalizedTags = normalizeTags(tags);
@@ -139,9 +137,6 @@ export const createPost = async (req, res) => {
             },
         });
 
-        console.log(req.body);
-        console.log(req.file);
-
         return res.status(201).json(post);
 
     } catch (err) {
@@ -160,10 +155,8 @@ export const updatePost = async (req, res) => {
         let imageUrl = null;
 
         if (req.file) {
-            console.log("Processing local image update:", req.file.originalname, req.file.size, req.file.filename);
             const origin = `${req.protocol}://${req.get("host")}`;
             imageUrl = `${origin}/uploads/${req.file.filename}`;
-            console.log("Local image updated at:", imageUrl);
         }
 
         const updateData = {};
@@ -218,7 +211,6 @@ export const updatePost = async (req, res) => {
 export const deletePost = async (req, res) => {
     try {
         const { postId } = req.params;
-        console.log("DELETE postId:", postId);
 
         const post = await prisma.post.delete({
             where: { id: postId }

@@ -3,6 +3,7 @@ import '../styles/Post.css';
 import { useEffect, useState } from "react";
 import Comments from "../components/Comments";
 import Tag from "../components/Tag";
+import ReactMarkdown from "react-markdown";
 
 const Post = () => {
     const { API_URL } = useOutletContext();
@@ -16,7 +17,6 @@ const Post = () => {
             .then(data => setPost(data));
     }, [postId]);
 
-    console.log(post);
     if (!post) {
         return <p>Loading post...</p>
     }
@@ -77,7 +77,9 @@ const Post = () => {
 
             <section id="post-body">
                 <div className="post-content">
-                    <p>{post.content}</p>
+                    <ReactMarkdown>
+                        {post.content}
+                    </ReactMarkdown>
 
                     <Comments post={post}/>
                 </div> 
