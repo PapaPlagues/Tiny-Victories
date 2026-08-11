@@ -1,5 +1,5 @@
 import { useOutletContext, useParams } from "react-router";
-import '../styles/Post.css';
+import "../styles/Post.css";
 import { useEffect, useState } from "react";
 import Comments from "../components/Comments";
 import Tag from "../components/Tag";
@@ -15,20 +15,19 @@ const Post = () => {
         fetch(`${API_URL}/posts/${postId}`)
             .then(res => res.json())
             .then(data => setPost(data));
-    }, [postId]);
+    }, [API_URL, postId]);
 
     if (!post) {
-        return <p>Loading post...</p>
+        return <p className="post-loading">Loading post...</p>;
     }
 
     const createdDate = new Date(post.createdAt);
     const updatedDate = new Date(post.updatedAt);
     const tagList = post.tags || [];
 
-    return(
+    return (
         <>
             <header className="post-header">
-
                 <div className="post-header-inner">
 
                     {post.imageUrl && (
@@ -36,61 +35,60 @@ const Post = () => {
                             src={post.imageUrl}
                             alt={post.title}
                             className="post-cover"
-                            style={{ width: "100%", maxHeight: "400px", objectFit: "cover", marginBottom: "1rem" }}
                         />
                     )}
 
-
-                    <h1>{post.title}</h1>
-
-                    <div className="post-meta">
-                        <span>
-                            By {post.author.username}
-                        </span>
-
-                        <span>
-                            {createdDate.toLocaleDateString("en-US", {
-                                year:"numeric",
-                                month:"long",
-                                day:"numeric"
-                            })}
-                        </span>
-                    </div>
-
-                    
-                    <p>Updated {" "}
-                        {updatedDate.toLocaleTimeString("en-US", {
-                            year: "numeric", month: "long", day: "numeric", hour: "2-digit", minute: "2-digit",
-                        })}
-                    </p>
-
-                    <div className="post-tags">
+                    <div className="post-heading">
+                        <div className="post-tags">
                             {tagList.map((tag, index) => (
                                 <Tag key={index}>
                                     {typeof tag === "string" ? tag : tag.name}
                                 </Tag>
                             ))}
+                        </div>
+
+                        <h1>{post.title}</h1>
+
+                        <div className="post-meta">
+                            <span>
+                                By {post.author.username}
+                            </span>
+
+                            <span>
+                                {createdDate.toLocaleDateString("en-US", {
+                                    year: "numeric",
+                                    month: "long",
+                                    day: "numeric"
+                                })}
+                            </span>
+
+                            {post.updatedAt !== post.createdAt && (
+                                <span>
+                                    Updated{" "}
+                                    {updatedDate.toLocaleDateString("en-US", {
+                                        year: "numeric",
+                                        month: "long",
+                                        day: "numeric"
+                                    })}
+                                </span>
+                            )}
+                        </div>
                     </div>
 
                 </div>
             </header>
 
-            <section id="post-body">
-                <div className="post-content">
+            <main id="post-body">
+                <article className="post-content">
                     <ReactMarkdown>
                         {post.content}
                     </ReactMarkdown>
 
-                    <Comments post={post}/>
-                </div> 
-            </section>
-
-
-            
-
+                    <Comments post={post} />
+                </article>
+            </main>
         </>
-    )
+    );
 };
-
 
 export default Post;
