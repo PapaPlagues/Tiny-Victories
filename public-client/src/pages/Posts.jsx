@@ -1,16 +1,12 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useOutletContext } from "react-router";
 import PostList from "../components/PostList";
 import '../styles/Posts.css';
 import '../styles/Tag.css';
 
 const Posts = () => {
-    const { backendData = [], refreshPosts } = useOutletContext();
+    const { backendData = [] } = useOutletContext();
     const [activeTag, setActiveTag] = useState(null);
-
-    useEffect(() => {
-        refreshPosts?.();
-    }, [refreshPosts]);
 
     const allTags = [
         ...new Set(
