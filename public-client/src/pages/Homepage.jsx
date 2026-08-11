@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import PostList from "../components/PostList";
 import '../styles/Homepage.css';
 import heroImage from "../assets/pexels-timmossholder-3260289.jpg";
