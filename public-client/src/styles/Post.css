@@ -347,3 +347,42 @@
         font-size: 1.5rem;
     }
 }
+
+
+/* =========================
+HEADINGS
+========================= */
+
+.post-content h1,
+.post-content h2,
+.post-content h3 {
+    color: var(--dark-text);
+    line-height: 1.2;
+    letter-spacing: -0.5px;
+}
+
+.post-content h1 {
+    font-size: 2.2rem;
+    margin-top: 3rem;
+    margin-bottom: 1.25rem;
+}
+
+.post-content h2 {
+    font-size: 1.7rem;
+
+    margin-top: 3rem;
+    margin-bottom: 1.25rem;
+
+    padding-bottom: 0.6rem;
+
+    border-bottom: 1px solid rgba(130, 94, 186, 0.25);
+}
+
+.post-content h3 {
+    font-size: 1.3rem;
+
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+
+    color: var(--dark-primary);
+}

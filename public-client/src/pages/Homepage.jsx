@@ -16,9 +16,7 @@ const Homepage = () => {
                         <h1>Welcome to <span className="brand">Tiny Victories</span></h1>
 
                         <p>
-                            Hello! I'm Jacob. I like building things - websites, small games, drawings, and stories.
-                            Right now I'm learning web development and UX design, and this blog is where I keep everything I'm working on and figuring out.
-                            It's a mix of code, art, ideas, and various other projects.
+                           Hello! I'm Jacob. I like building websites, small games, drawings, and stories. Tiny Victories is where I document what I'm learning, building, and figuring out.
                         </p>
                         <div>
                             <a href="/posts" className="btn" id="main-btn">
