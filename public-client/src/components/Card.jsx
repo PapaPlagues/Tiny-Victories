@@ -9,26 +9,18 @@ function Card({ title, excerpt, img, link, tags, onTagClick }) {
     return (
         <a className="card" href={link}>
 
-            {img ? (
-                <img
-                    src={img}
-                    alt={title}
-                    className="card-img"
-                />
-            ) : (
-                <img
-                    src={placeholderImage}
-                    alt={title}
-                    className="card-img"
-                />
-            )}
+             <img
+                src={img || placeholderImage}
+                alt={title}
+                className="card-img"
+                onError={(e) => {
+                    e.currentTarget.src = placeholderImage;
+                }}
+            />
 
             <div className="card-content">
-
                 <h2>{title}</h2>
-
                 <p>{excerpt}</p>
-
             </div>
 
             {tagList.length > 0 && (

@@ -30,13 +30,16 @@ const Post = () => {
             <header className="post-header">
                 <div className="post-header-inner">
 
-                    {post.imageUrl && (
-                        <img
-                            src={post.imageUrl}
-                            alt={post.title}
-                            className="post-cover"
-                        />
-                    )}
+                {post.imageUrl ? (
+                    <img
+                        src={post.imageUrl}
+                        alt={post.title}
+                        className="post-cover"
+                        onError={(e) => {
+                            e.currentTarget.style.display = "none";
+                        }}
+                    />
+                ) : null}
 
                     <div className="post-heading">
                         <div className="post-tags">
